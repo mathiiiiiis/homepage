@@ -1,0 +1,155 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { MiiImages } from '@/stores/imagePaths';
+
+const MIRROR_FALLBACKS = {
+    upRight: { src: 'upLeft', flip: true },
+    right: { src: 'left', flip: true},
+    downLeft: { src: 'downRight', flip: true },
+    down: { src: 'front', flip: false},
+}
+const ALL_KEYS = ['upLeft', 'up', 'upRight', 'left', 'front', 'right', 'downLeft', 'down', 'downRight']
+const GRID = [
+    ['upLeft', 'up', 'upRight'],
+    ['left', 'front', 'right'],
+    ['downLeft', 'down', 'downRight'],
+]
+//resolve all images, uses a mirror fallback if missing
+const resolved = {}
+ALL_KEYS.forEach((key) => {
+    if (MiiImages[key]) {
+        resolved[key] = { src: MiiImages[key], flip: false }
+    } else {
+        const fb = MIRROR_FALLBACKS[key]
+        if (fb && MiiImages[fb.src]) {
+            resolved[key] = { src: MiiImages[fb.src], flip: fb.flip }
+        } else {
+            resolved[key] = { src: MiiImages.front, flip: false }
+        }
+    }
+})
+
+const containerRef = ref(null)
+const activeKey = ref('front')
+const isHovering = ref(false)
+const mouseX = ref(0.5)
+const mouseY = ref(0.5)
+
+const tiltX = computed(() => (mouseX.value - 0.5) * 8)
+const tiltY = computed(() => (mouseY.value - 0.5) * -8)
+
+const wrapperTransform = computed(() => {
+    if (!isHovering.value) return 'rotateY(0deg) rotateX(0deg) scale(1)'
+    return `rotateY(${tiltX.value}deg) rotateX(${tiltY.value}deg) scale(1.01)`
+})
+
+function onMouseMove(e) {
+    const rect = containerRef.value.getBoundingClientRect()
+    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height))
+
+    const col = x < 0.33 ? 0 : x < 0.66 ? 1 : 2
+    const row = y < 0.33 ? 0 : y < 0.66 ? 1 : 2
+
+    activeKey.value = GRID[row][col]
+    mouseX.value = x
+    mouseY.value = y
+}
+
+function onMouseEnter() {
+    isHovering.value = true
+}
+
+function onMouseLeave() {
+    isHovering.value = false
+    activeKey.value = 'front'
+    mouseX.value = 0.5
+    mouseY.value = 0.5
+}
+</script>
+
+<template>
+    <div
+        ref="containerRef"
+        class="mii-container"
+        @mousemove="onMouseMove"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+    >
+        <!-- ground shadow -->
+         <div
+            class="mii-shadow"
+            :class="{ hovering: isHovering }"
+         />
+
+         <!-- perspective wrapper -->
+          <div
+            class="mii-wrapper"
+            :style="{ transform: wrapperTransform }"
+          >
+            <img
+                v-for="key in ALL_KEYS"
+                :key="key"
+                :src="resolved[key].src"
+                :class="{
+                    active: activeKey === key,
+                    flipped: resolved[key].flip,
+                    'has-hiver': isHovering,
+                }"
+                class="mii-image"
+                alt=""
+                draggable="false"
+            />
+        </div>
+    </div>
+</template>
+
+<style scoped>
+.mii-container {
+    width: 340px;
+    height: 420px;
+    cursor: pointer;
+    perspective: 800px;
+    position: relative;
+}
+.mii-shadow {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%) scale(1);
+    width: 120px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
+    transition: transform 0.4s ease;
+    z-index: 0;
+}
+.mii-shadow.hovering {
+    transform: translate(-50%) scale(1.05);
+}
+.mii-wrapper {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.25s ease-out;
+    transform-style: preserve-3d;
+    position: relative;
+    /*background: #000;*/
+}
+.mii-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+}
+.mii-image.active {
+    opacity: 1;
+}
+.mii-image.flipped {
+    transform: scaleX(-1);
+}
+</style>
