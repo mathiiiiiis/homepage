@@ -1,111 +1,136 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
 
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 :root {
-    --bg: #121212;
-    --bg-solid: #1E1E1E;
+  --bg: #121212;
+  --bg-solid: #1e1e1e;
 
-    --card-bg: rgba(36,33,34,0.7);
-    --card-border: #3F3B3D;
+  --card-bg: rgba(36, 33, 34, 0.7);
+  --card-border: #3f3b3d;
 
-    --text-primary: #FFFFFF;
-    --text-secondary: #C4C4C4;
+  --text-primary: #ffffff;
+  --text-secondary: #c4c4c4;
 
-    --font-primary: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, "Segeo UI", Roboto, Helvetica, Arial, sans-serif;
-    --font-secondary: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-primary:
+    'Geist', system-ui, -apple-system, BlinkMacSystemFont, 'Segeo UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-secondary:
+    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
 
-    --button-primary: #FFFFFF;
-    --button-text: #121212;
+  --button-primary: #ffffff;
+  --button-text: #121212;
 
-    --icon-bg: #2A2A2A;
+  --icon-bg: #2a2a2a;
 
-    --shadow-soft: 0 10px 24px rgba(0,0,0,0.35);
+  --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.35);
 
-    --transition-fast: 150ms ease;
-    --transition-normal: 250ms ease;
-    --transition-slow: 350ms ease;
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
 }
 
-[data-theme="light"] {
-    --bg: #ECECEC;
-    --bg-solid: #E8E8E8;
+[data-theme='light'] {
+  --bg: #ececec;
+  --bg-solid: #e8e8e8;
 
-    --card-bg: rgba(255,255,255,0.7);
-    --card-border: #C4C0C2;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: #c4c0c2;
 
-    --text-primary: #121212;
-    --text-secondary: #6F6F6F;
+  --text-primary: #121212;
+  --text-secondary: #6f6f6f;
 
-    --button-primary: #121212;
-    --button-text: #FFFFFF;
+  --button-primary: #121212;
+  --button-text: #ffffff;
 
-    --icon-bg: #E5E5E5;
+  --icon-bg: #e5e5e5;
 
-    --shadow-soft: 0 10px 24px rgba(0,0,0,0.12);
+  --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
 body {
-    font-family: var(--font-secondary);
-    font-size: 14px;
-    color: var(--text-secondary);
-    background-color: var(--bg);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: var(--text-secondary);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==== TYPOGRAPHY ==== */
-h1, h2, h3, h4, h5, h6 {
-    color: var(--text-primary);
-    font-weight: 500;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
-h1 { font-size: 42px; }
-h2 { font-size: 34px; }
-h3 { font-size: 30px; }
-h4 { font-size: 28px; }
-h5 { font-size: 26px; }
-h6 { font-size: 24px; }
+h1 {
+  font-size: 42px;
+}
+h2 {
+  font-size: 34px;
+}
+h3 {
+  font-size: 30px;
+}
+h4 {
+  font-size: 28px;
+}
+h5 {
+  font-size: 26px;
+}
+h6 {
+  font-size: 24px;
+}
 
 p {
-    margin: 0 0 1rem 0;
-    font-size: 17.906px;
+  margin: 0 0 1rem 0;
+  font-size: 17.906px;
 }
 
 a {
-    color: var(--text-primary);
-    text-decoration: none;
-    transition: color var(--transition-fast);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
 a:hover {
-    color: var(--text-secondary);
+  color: var(--text-secondary);
 }
 
 /* ==== IDK VRO ==== */
 .icon {
-    width: 32px;
-    height: 32px;
-    fill: currentColor;
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
 }
 
 /* ==== page enter ==== */
 .page-enter-active,
 .page-leave-active {
-    transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .page-enter-from {
-    opacity: 0;
-    transform: translateY(8px);
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 .page-leave-to {
-    opacity: 0;
-    transform: rotateY(-8px);
+  opacity: 0;
+  transform: rotateY(-8px);
 }
