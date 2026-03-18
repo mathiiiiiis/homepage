@@ -395,7 +395,7 @@ const projects = [
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--icon-bg);
+  background: #2a2a2a;
 }
 
 .btn-website,
