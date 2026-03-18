@@ -138,7 +138,7 @@ onUnmounted(() => {
     width: 120px;
     height: 20px;
     border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
+    /*background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);*/
     transition: transform 0.4s ease;
     z-index: 0;
 }
