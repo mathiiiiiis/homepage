@@ -37,8 +37,8 @@ onMounted (async () => {
 
 <style lang="css" scoped>
 .pfp-wrapper {
-    width: 100px;
-    height: 100px;
+    width: 115px;
+    height: 115px;
     flex-shrink: 0;
 }
 
@@ -47,7 +47,7 @@ onMounted (async () => {
 .pfp-fallback {
     width: 100%;
     height: 100%;
-    border-radius: 15px 25px 25px 25px;
+    border-radius: 15px 25px 15px 15px;
     object-fit: cover;
 }
 
