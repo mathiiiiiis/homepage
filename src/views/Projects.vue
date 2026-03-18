@@ -2,7 +2,7 @@
 const featured = {
   title: 'Sono',
   description:
-    'A local music player a lot of devices (kinda). Built with Flutter. Development started in April 2025. Got restarted in March 2026.',
+    'A local music player for a lot of devices (kinda). Built with Flutter. Development started in April 2025. Got restarted in March 2026.',
   tech: ['icon-flutter', 'icon-dart'],
   github: 'https://github.com/appsono/sono-new',
   website: 'https://sono.wtf',
