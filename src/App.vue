@@ -1,11 +1,15 @@
 <script setup>
+import IconSprite from '@/components/icons/IconSprite.vue'
+import ThemeToogle from '@/components/ThemeToogle.vue';
 import { usePreloadImages } from '@/composables/usePreloadImages'
-import IconSprite from './components/icons/IconSprite.vue'
+import { useTheme } from '@/composables/useTheme';
 usePreloadImages()
+useTheme()
 </script>
 
 <template>
   <IconSprite />
+  <ThemeToogle />
   <router-view v-slot="{ Component }">
     <transition name="page" mode="out-in">
       <component :is="Component" />

@@ -385,7 +385,7 @@ const projects = [
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--icon-bg);
+  background: #2A2A2A;
 }
 
 .btn-icon-sm {

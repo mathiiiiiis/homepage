@@ -225,7 +225,7 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--icon-bg);
+  background: #2A2A2A;
   cursor: pointer;
 }
 
