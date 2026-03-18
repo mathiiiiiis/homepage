@@ -1,5 +1,5 @@
 <script setup>
-import MiiViewer from '@/components/MiiViewer.vue';
+import MiiViewer from '@/components/home/MiiViewer.vue';
 import ProfilePicture from '@/components/home/ProfilePicture.vue';
 </script>
 
@@ -24,6 +24,13 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
                         </div>
                     </section>
                     <section class="button-row">
+                        <button class="btn-projects">Projects</button>
+                        <a href="https://github.com/mathiiiiiis" target="_blank" class="btn-icon">
+                            <svg class="icon"><use href="#icon-github" /></svg>
+                        </a> 
+                        <a href="https://discord.com/users/1377301109827174660" target="_blank" class="btn-icon discord">
+                            <svg class="icon"><use href="#icon-discord" /></svg>
+                        </a>
                     </section>
                 </div>
             </div>
@@ -32,6 +39,14 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
         </div>
         <div class="right">
             <section  class="card about-me">
+                <h2 class="about-me-title">ABOUT<span>ME</span></h2>
+                <p>Hello, I'm mathis, a 16-year-old, living in Germany.
+                    I started coding when I was 13 and now mostly work on OSS Projects.</p>
+                <p>Currently building Sono, a local music player for Android.</p>
+                <p>Apart from coding I'm also listening to music or do drawing.
+                   Big fan of Ye, Gorillaz and MF DOOM.
+                </p>
+                <span class="about-me-tag">// mathis</span>
             </section>
             <section class="card last-played">
             </section>
@@ -97,7 +112,7 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
 /* ==== ABOUT SHORT ==== */
 .about-short {
     width: 450px;
-    height: 265px;
+    height: 292px;
     border-radius: 25px;
     padding: 15px;
     display: flex;
@@ -127,21 +142,101 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
 
 .button-row {
     width: 450px;
-    height:70px;
+    height: 70px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
 }
 
+.btn-projects {
+    flex: 1;
+    height: 100%;
+    border-radius: 25px;
+    border: none;
+    background: var(--button-primary);
+    color: var(--button-text);
+    font-family: var(--font-secondary);
+    font-size: 16px;
+    font-weight: 600;
+    font-size: 22px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+}
+
+.btn-projects:hover {
+    opacity: 0.85;
+}
+
+.btn-icon {
+    width: 70px;
+    height: 100%;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--icon-bg);
+    cursor: pointer;
+}
+
+.btn-projects,
+.btn-icon {
+    transition: opacity var(--transition-fast), transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-projects:hover,
+.btn-icon:hover {
+    opacity: 0.85;
+}
+
+.btn-projects:active,
+.btn-icon:active {
+    transform: scale(0.92);
+}
+
+.btn-icon .icon {
+    width: 45px;
+    height: 45px;
+}
+
+.btn-icon.discord {
+    background: #5865F2;
+}
 
 /* ==== ABOUT ME ==== */
 .about-me {
     width: 394px;
     height: 481px;
     border-radius: 25px 50px 25px 25px;
-    padding: 24px
+    padding: 24px;
+    font-family: var(--font-secondary);
+    display: flex;
+    flex-direction: column;
 }
 
+.about-me-title {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.about-me-title span {
+    font-weight: 700;
+    font-size: 34px;
+}
+
+.about-me p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.about-me-tag {
+    margin-top: auto;
+    color: var(--card-border);
+    font-family: var(--font-secondary);
+    font-size: 14px;
+}
 
 /* ==== TECH STACK ==== */
 .tech-stack {
