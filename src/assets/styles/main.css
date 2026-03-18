@@ -64,7 +64,11 @@ body,
 .btn-website,
 .theme-toggle,
 .project-info {
-    transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease, box-shadow 300ms ease;
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease;
 }
 
 body {
