@@ -49,6 +49,13 @@ onMounted (async () => {
     height: 100%;
     border-radius: 15px 25px 15px 15px;
     object-fit: cover;
+    transition: border-radius var(--transition-fast);
+}
+
+.pfp:hover,
+.pfp-skeleton:hover,
+.pfp-fallback:hover {
+    border-radius: 15px 45px 25px 45px;
 }
 
 .pfp-skeleton {
