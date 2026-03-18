@@ -25,7 +25,7 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue';
                         </div>
                     </section>
                     <section class="button-row">
-                        <button class="btn-projects">Projects</button>
+                        <button class="btn-projects" @click="$router.push('/projects')">Projects</button>
                         <a href="https://github.com/mathiiiiiis" target="_blank" class="btn-icon">
                             <svg class="icon"><use href="#icon-github" /></svg>
                         </a> 
@@ -350,5 +350,116 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue';
     height: 170px;
     border-radius: 25px 25px 50px 50px;
     overflow: hidden;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 1200px) {
+    .home {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        padding: 48px 24px;
+    }
+
+    .right {
+        padding-top: 0;
+    }
+
+    .about-me {
+        border-radius: 25px;
+    }
+}
+
+@media (max-width: 820px) {
+    .left-top {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .left-top-right {
+        padding-top: 0;
+        width: 100%;
+    }
+
+    .left {
+        width: 100%;
+    }
+
+    .mii-viewer {
+        width: 100%;
+        max-width: 450px;
+        border-radius: 50px 50px 25px 25px;
+    }
+
+    .about-short {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .tech-stack {
+        width: 100%;
+        max-width: 450px;
+        border-radius: 25px;
+    }
+
+    .about-me {
+        width: 100%;
+        max-width: 450px;
+        height: auto;
+        min-height: 380px;
+    }
+
+    .last-played {
+        width: 100%;
+        max-width: 450px;
+    }
+}
+
+@media (max-width: 500px) {
+    .home {
+        padding: 32px 16px;
+    }
+
+    .mii-viewer {
+        width: 100%;
+        height: 360px;
+    }
+
+    .mii-viewer :deep(.mii-container) {
+        transform: scale(1) translateY(-8px);
+    }
+
+    .about-short {
+        width: 100%;
+        height: auto;
+        min-height: 240px;
+    }
+
+    .button-row {
+        width: 100%;
+        height: 60px;
+    }
+
+    .btn-icon {
+        width: 60px;
+    }
+
+    .about-me {
+        width: 100%;
+        height: auto;
+        min-height: 340px;
+    }
+
+    .last-played {
+        width: 100%;
+        height: auto;
+        min-height: 140px;
+    }
+
+    .tech-stack {
+        width: 100%;
+        height: auto;
+        min-height: 130px;
+    }
 }
 </style>
