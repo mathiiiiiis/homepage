@@ -90,7 +90,7 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
           Hello, I'm mathis, a 16-year-old, living in Germany. I started coding when I was 13 and
           now mostly work on OSS Projects.
         </p>
-        <p>Currently building Sono, a local music player for Android.</p>
+        <p>Currently building Sono, a local music player.</p>
         <p>
           Apart from coding I'm also listening to music or do drawing. Big fan of Ye, Gorillaz and
           MF DOOM.
