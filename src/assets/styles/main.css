@@ -9,6 +9,7 @@
 
 :root {
     --bg: #121212;
+    --bg-solid: #1E1E1E;
 
     --card-bg: rgba(36,33,34,0.7);
     --card-border: #3F3B3D;
@@ -33,6 +34,7 @@
 
 [data-theme="light"] {
     --bg: #ECECEC;
+    --bg-solid: #E8E8E8;
 
     --card-bg: rgba(255,255,255,0.7);
     --card-border: #C4C0C2;
@@ -90,4 +92,20 @@ a:hover {
     width: 32px;
     height: 32px;
     fill: currentColor;
+}
+
+/* ==== page enter ==== */
+.page-enter-active,
+.page-leave-active {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: rotateY(-8px);
 }
