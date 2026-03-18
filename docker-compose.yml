@@ -1,0 +1,11 @@
+services:
+  homepage:
+    build:
+      context: .
+      args:
+        VITE_LASTFM_API_KEY: ${VITE_LASTFM_API_KEY}
+        VITE_LASTFM_USERNAME: ${VITE_LASTFM_USERNAME}
+        VITE_DISCORD_USER_ID: ${VITE_DISCORD_USER_ID}
+    ports:
+      - "${PORT}:80"
+    restart: unless-stopped
