@@ -20,7 +20,7 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
                             </div>
                         </div>
                         <div class="about-short-description">
-                            <h5>A 16-year-old software dev based in Germany.</h5>
+                            <h5>A 16-year-old software dev from Germany.</h5>
                         </div>
                     </section>
                     <section class="button-row">
@@ -35,6 +35,43 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
                 </div>
             </div>
             <section class="card tech-stack">
+                <h3 class="tech-stack-title">Tech<span>Stack</span></h3>
+                <div class="tech-stack-scroll" @mouseenter="$el.style.animationPlayState = 'pause'" @mouseleave="$el.style.animationPlayState = 'running'">
+                    <div class="tech-stack-track">
+                        <svg class="tech-icon"><use href="#icon-flutter" /></svg>
+                        <svg class="tech-icon"><use href="#icon-dart" /></svg>
+                        <svg class="tech-icon"><use href="#icon-vue" /></svg>
+                        <svg class="tech-icon"><use href="#icon-javascript" /></svg>
+                        <svg class="tech-icon"><use href="#icon-python" /></svg>
+                        <svg class="tech-icon"><use href="#icon-go" /></svg>
+                        <span class="tech-divider">·</span>
+                        <svg class="tech-icon"><use href="#icon-postgres" /></svg>
+                        <svg class="tech-icon"><use href="#icon-firebase" /></svg>
+                        <svg class="tech-icon"><use href="#icon-docker" /></svg>
+                        <svg class="tech-icon"><use href="#icon-git" /></svg>
+                        <span class="tech-divider">·</span>
+                        <svg class="tech-icon"><use href="#icon-arch" /></svg>
+                        <svg class="tech-icon"><use href="#icon-linux" /></svg>
+                        <span class="tech-divider">·</span>
+
+                        <!--copy 2-->
+                        <svg class="tech-icon"><use href="#icon-flutter" /></svg>
+                        <svg class="tech-icon"><use href="#icon-dart" /></svg>
+                        <svg class="tech-icon"><use href="#icon-vue" /></svg>
+                        <svg class="tech-icon"><use href="#icon-javascript" /></svg>
+                        <svg class="tech-icon"><use href="#icon-python" /></svg>
+                        <svg class="tech-icon"><use href="#icon-go" /></svg>
+                        <span class="tech-divider">·</span>
+                        <svg class="tech-icon"><use href="#icon-postgres" /></svg>
+                        <svg class="tech-icon"><use href="#icon-firebase" /></svg>
+                        <svg class="tech-icon"><use href="#icon-docker" /></svg>
+                        <svg class="tech-icon"><use href="#icon-git" /></svg>
+                        <span class="tech-divider">·</span>
+                        <svg class="tech-icon"><use href="#icon-arch" /></svg>
+                        <svg class="tech-icon"><use href="#icon-linux" /></svg>
+                        <span class="tech-divider">·</span>
+                    </div>
+                </div>
             </section>
         </div>
         <div class="right">
@@ -67,6 +104,7 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 754px;
 }
 
 .left-top {
@@ -241,9 +279,67 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
 /* ==== TECH STACK ==== */
 .tech-stack {
     width: 100%;
+    max-width: 100%;
     height: 164px;
     border-radius: 25px 25px 50px 50px;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.tech-stack-title {
+    font-family: var(--font-primary);
+    font-weight: 300;
+}
+
+.tech-stack-title span {
+    font-weight: 700;
+}
+
+.tech-stack-scroll {
+    overflow: hidden;
+    min-width: 0;
+    padding-block: 8px;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.tech-stack-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 20s linear infinite;
+    padding-block: 0;
+}
+
+.tech-stack-scroll:hover .tech-stack-track {
+    animation-play-state: paused;
+}
+
+.tech-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    margin-right: 32px;
+    transition: transform 200ms cubic-bezier(0.34, 1.46, 0.64, 1);
+}
+
+.tech-icon:hover {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.tech-divider {
+    color: var(--card-border);
+    font-size: 32px;
+    line-height: 48px;
+    flex-shrink: 0;
+    user-select: none;
+    margin-right: 32px;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 /* ==== LAST PLAYED ==== */
