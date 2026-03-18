@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const DISCORD_USER_ID = '1377301109827174660'
+const DISCORD_USER_ID = import.meta.env.VITE_DISCORD_USER_ID
 
 const avatarUrl = ref(null)
 const loading = ref(true)
@@ -14,7 +14,7 @@ onMounted (async () => {
         const ext = avatar.startsWith('a_') ? 'gif' : 'png'
         avatarUrl.value = `https://cdn.discordapp.com/avatars/${id}/${avatar}.${ext}?size=256`
     } catch (e) {
-        console.error('fetch failed:', e)
+        console.error('[LANYARD] Fetch failed:', e)
     } finally {
         loading.value = false
     }
