@@ -56,6 +56,17 @@
   --shadow-soft: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
+body,
+.card,
+.btn-projects,
+.btn-icon,
+.btn-icon-sm,
+.btn-website,
+.theme-toggle,
+.project-info {
+    transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease, box-shadow 300ms ease;
+}
+
 body {
   font-family: var(--font-secondary);
   font-size: 14px;

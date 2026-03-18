@@ -139,10 +139,11 @@ onUnmounted(() => {
   font-family: var(--font-primary);
   font-weight: 600;
   font-size: 18px;
-  color: var(--text-primary);
+  color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 
 .lastfm-artist {
