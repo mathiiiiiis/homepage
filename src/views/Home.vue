@@ -1,6 +1,7 @@
 <script setup>
 import MiiViewer from '@/components/home/MiiViewer.vue';
 import ProfilePicture from '@/components/home/ProfilePicture.vue';
+import LastFmWidget from '@/components/home/LastFmWidget.vue';
 </script>
 
 <template>
@@ -86,6 +87,7 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
                 <span class="about-me-tag">// mathis</span>
             </section>
             <section class="card last-played">
+                <LastFmWidget />
             </section>
         </div>
     </div>
@@ -347,6 +349,6 @@ import ProfilePicture from '@/components/home/ProfilePicture.vue';
     width: 394px;
     height: 170px;
     border-radius: 25px 25px 50px 50px;
-    padding: 16p;
+    overflow: hidden;
 }
 </style>
