@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { MiiImages } from '@/stores/imagePaths';
 
 const MIRROR_FALLBACKS = {
@@ -29,12 +29,12 @@ ALL_KEYS.forEach((key) => {
     }
 })
 
-const containerRef = ref(null)
 const activeKey = ref('front')
 const isHovering = ref(false)
 const mouseX = ref(0.5)
 const mouseY = ref(0.5)
 
+const containerRef = ref(null)
 const tiltX = computed(() => (mouseX.value - 0.5) * 8)
 const tiltY = computed(() => (mouseY.value - 0.5) * -8)
 
@@ -44,9 +44,23 @@ const wrapperTransform = computed(() => {
 })
 
 function onMouseMove(e) {
-    const rect = containerRef.value.getBoundingClientRect()
-    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-    const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height))
+    const el = containerRef.value
+    const rect = el.getBoundingClientRect()
+    let x, y
+
+    if (rect && e.clientX >= rect.left && e.clientX <= rect.right &&
+        e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        //inside container > precise
+        x = (e.clientX - rect.left) / rect.width
+        y = (e.clientY - rect.top) / rect.height
+    } else {
+        //outside container > coarse
+        x = e.clientX / window.innerWidth
+        y = e.clientY / window.innerHeight
+    }
+
+    x = Math.max(0, Math.min(1, x))
+    y = Math.max(0, Math.min(1, y))
 
     const col = x < 0.33 ? 0 : x < 0.66 ? 1 : 2
     const row = y < 0.33 ? 0 : y < 0.66 ? 1 : 2
@@ -54,9 +68,6 @@ function onMouseMove(e) {
     activeKey.value = GRID[row][col]
     mouseX.value = x
     mouseY.value = y
-}
-
-function onMouseEnter() {
     isHovering.value = true
 }
 
@@ -66,15 +77,22 @@ function onMouseLeave() {
     mouseX.value = 0.5
     mouseY.value = 0.5
 }
+
+onMounted(() => {
+    window.addEventListener('mousemove', onMouseMove)
+    document.documentElement.addEventListener('mouseleave', onMouseLeave)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('mousemove', onMouseMove)
+    document.documentElement.removeEventListener('mouseleave', onMouseLeave)
+})
 </script>
 
 <template>
     <div
         ref="containerRef"
         class="mii-container"
-        @mousemove="onMouseMove"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave"
     >
         <!-- ground shadow -->
          <div
@@ -104,7 +122,7 @@ function onMouseLeave() {
     </div>
 </template>
 
-<style scoped>
+<style lang="css" scoped>
 .mii-container {
     width: 340px;
     height: 420px;
