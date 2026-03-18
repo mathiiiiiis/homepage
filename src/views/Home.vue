@@ -1,6 +1,6 @@
 <script setup>
 import MiiViewer from '@/components/MiiViewer.vue';
-import ProfilePicture from '@/components/ProfilePicture.vue';
+import ProfilePicture from '@/components/home/ProfilePicture.vue';
 </script>
 
 <template>

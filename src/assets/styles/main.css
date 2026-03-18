@@ -83,3 +83,10 @@ a {
 a:hover {
     color: var(--text-secondary);
 }
+
+/* ==== IDK VRO ==== */
+.icon {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+}
