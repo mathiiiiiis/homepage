@@ -84,7 +84,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(40px) brightness(0.4) saturate(1.5);
+  filter: blur(40px) brightness(0.6) saturate(1.5);
   transform: scale(1.5);
   z-index: 0;
 }
