@@ -93,7 +93,7 @@ onUnmounted(() => {
 .lastfm-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(18, 12, 15, 0.4);
+  background: rgba(55, 50, 60, 0.55);
   z-index: 0;
 }
 
