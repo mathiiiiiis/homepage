@@ -1,8 +1,12 @@
-import { ref, watch, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 
-const theme = ref(localStorage.getItem('theme') || 'dark')
+let theme
 
 export function useTheme() {
+  if (!theme) {
+    theme = ref(localStorage.getItem('theme') || 'dark')
+  }
+
   watchEffect(() => {
     document.documentElement.setAttribute('data-theme', theme.value)
     localStorage.setItem('theme', theme.value)
