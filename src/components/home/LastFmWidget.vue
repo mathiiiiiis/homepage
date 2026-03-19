@@ -44,7 +44,14 @@ onUnmounted(() => {
 
 <template>
   <a v-if="track" :href="track.url" target="_blank" class="lastfm-link">
-    <img :key="track.image" v-if="track.image" :src="track.image" class="lastfm-bg" alt="" draggable="false" />
+    <img
+      :key="track.image"
+      v-if="track.image"
+      :src="track.image"
+      class="lastfm-bg"
+      alt=""
+      draggable="false"
+    />
     <div class="lastfm-overlay" />
     <div class="lastfm-content">
       <div class="lastfm-cover-wrapper">
