@@ -115,13 +115,13 @@ onUnmounted(() => {
         v-for="key in ALL_KEYS"
         :key="key"
         :src="resolved[key].src"
+        :alt="'Mii facing' + key"
         :class="{
           active: activeKey === key,
           flipped: resolved[key].flip,
-          'has-hiver': isHovering,
+          'has-hover': isHovering,
         }"
         class="mii-image"
-        alt=""
         draggable="false"
       />
     </div>
