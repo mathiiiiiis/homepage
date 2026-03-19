@@ -45,6 +45,7 @@ onUnmounted(() => {
 <template>
   <a v-if="track" :href="track.url" target="_blank" class="lastfm-link">
     <img v-if="track.image" :src="track.image" class="lastfm-bg" alt="" draggable="false" />
+    <div class="lastfm-overlay" />
     <div class="lastfm-content">
       <div class="lastfm-cover-wrapper">
         <img
@@ -86,6 +87,13 @@ onUnmounted(() => {
   object-fit: cover;
   filter: blur(40px) brightness(0.6) saturate(1.5);
   transform: scale(1.5);
+  z-index: 0;
+}
+
+.lastfm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 12, 15, 0.4);
   z-index: 0;
 }
 
