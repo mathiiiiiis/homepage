@@ -258,7 +258,6 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
 /* ==== ABOUT ME ==== */
 .about-me {
   width: 394px;
-  height: 481px;
   border-radius: 25px 50px 25px 25px;
   padding: 24px;
   font-family: var(--font-secondary);
