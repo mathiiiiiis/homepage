@@ -19,6 +19,14 @@ const projects = [
     images: ['/images/projects/blog-1.png'],
   },
   {
+    title: "Don't Click It",
+    description: "A reflex game where a narrator tells you to click or not. Sometimes they lie. ",
+    tech: ['icon-typescript', 'icon-docker'],
+    github: 'https://github.com/mathiiiiiis/dont-click-it',
+    website: 'https://dci.mathiiis.de',
+    images: ['/images/projects/dont-click-it-1.png'],
+  },
+  {
     title: 'Homepage',
     description: 'This website. What did you expect?',
     tech: ['icon-vue', 'icon-javascript', 'icon-docker'],
