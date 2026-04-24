@@ -77,11 +77,11 @@ onMounted(async () => {
 
 <style lang="css" scoped>
 .gh {
-  --cell-0: #f2f2f2;
-  --cell-1: #d6e4ff;
-  --cell-2: #a8c8ff;
-  --cell-3: #6ea8fe;
-  --cell-4: #1f6feb;
+  --cell-0: #242020;
+  --cell-1: #4a4646;
+  --cell-2: #737070;
+  --cell-3: #a8a5a5;
+  --cell-4: #ffffff;
   --cell-size: 12px;
   --cell-gap: 3px;
 }
