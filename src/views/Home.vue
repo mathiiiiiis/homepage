@@ -2,104 +2,111 @@
 import MiiViewer from '@/components/home/MiiViewer.vue'
 import ProfilePicture from '@/components/home/ProfilePicture.vue'
 import LastFmWidget from '@/components/home/LastFmWidget.vue'
+import GitHubActivity from '@/components/home/GitHubActivity.vue'
 </script>
 
 <template>
   <div class="home">
-    <div class="left">
-      <div class="left-top">
-        <section class="card mii-viewer">
-          <MiiViewer />
-        </section>
-        <div class="left-top-right">
-          <section class="card about-short">
-            <div class="about-short-header">
-              <ProfilePicture />
-              <div class="about-short-content">
-                <h3>Hello I'm</h3>
-                <h1>mathis</h1>
+    <!-- main bento grid -->
+    <div class="home-grid">
+      <div class="left">
+        <div class="left-top">
+          <section class="card mii-viewer">
+            <MiiViewer />
+          </section>
+          <div class="left-top-right">
+            <section class="card about-short">
+              <div class="about-short-header">
+                <ProfilePicture />
+                <div class="about-short-content">
+                  <h3>Hello I'm</h3>
+                  <h1>mathis</h1>
+                </div>
               </div>
-            </div>
-            <div class="about-short-description">
-              <h5>A 16-year-old software dev from Germany.</h5>
-            </div>
-          </section>
-          <section class="button-row">
-            <button class="btn-projects" @click="$router.push('/projects')">Projects</button>
-            <a href="https://github.com/mathiiiiiis" target="_blank" class="btn-icon">
-              <svg class="icon"><use href="#icon-github" /></svg>
-            </a>
-            <a
-              href="https://discord.com/users/1377301109827174660"
-              target="_blank"
-              class="btn-icon discord"
-            >
-              <svg class="icon"><use href="#icon-discord" /></svg>
-            </a>
-          </section>
-        </div>
-      </div>
-      <section class="card tech-stack">
-        <h3 class="tech-stack-title">Tech<span>Stack</span></h3>
-        <div
-          class="tech-stack-scroll"
-          @mouseenter="$el.style.animationPlayState = 'pause'"
-          @mouseleave="$el.style.animationPlayState = 'running'"
-        >
-          <div class="tech-stack-track">
-            <svg class="tech-icon"><use href="#icon-flutter" /></svg>
-            <svg class="tech-icon"><use href="#icon-dart" /></svg>
-            <svg class="tech-icon"><use href="#icon-vue" /></svg>
-            <svg class="tech-icon"><use href="#icon-javascript" /></svg>
-            <svg class="tech-icon"><use href="#icon-python" /></svg>
-            <svg class="tech-icon"><use href="#icon-go" /></svg>
-            <span class="tech-divider">·</span>
-            <svg class="tech-icon"><use href="#icon-postgres" /></svg>
-            <svg class="tech-icon"><use href="#icon-firebase" /></svg>
-            <svg class="tech-icon"><use href="#icon-docker" /></svg>
-            <svg class="tech-icon"><use href="#icon-git" /></svg>
-            <span class="tech-divider">·</span>
-            <svg class="tech-icon"><use href="#icon-arch" /></svg>
-            <svg class="tech-icon"><use href="#icon-linux" /></svg>
-            <span class="tech-divider">·</span>
-
-            <!--copy 2-->
-            <svg class="tech-icon"><use href="#icon-flutter" /></svg>
-            <svg class="tech-icon"><use href="#icon-dart" /></svg>
-            <svg class="tech-icon"><use href="#icon-vue" /></svg>
-            <svg class="tech-icon"><use href="#icon-javascript" /></svg>
-            <svg class="tech-icon"><use href="#icon-python" /></svg>
-            <svg class="tech-icon"><use href="#icon-go" /></svg>
-            <span class="tech-divider">·</span>
-            <svg class="tech-icon"><use href="#icon-postgres" /></svg>
-            <svg class="tech-icon"><use href="#icon-firebase" /></svg>
-            <svg class="tech-icon"><use href="#icon-docker" /></svg>
-            <svg class="tech-icon"><use href="#icon-git" /></svg>
-            <span class="tech-divider">·</span>
-            <svg class="tech-icon"><use href="#icon-arch" /></svg>
-            <svg class="tech-icon"><use href="#icon-linux" /></svg>
-            <span class="tech-divider">·</span>
+              <div class="about-short-description">
+                <h5>A 16-year-old software dev from Germany.</h5>
+              </div>
+            </section>
+            <section class="button-row">
+              <button class="btn-projects" @click="$router.push('/projects')">Projects</button>
+              <a href="https://github.com/mathiiiiiis" target="_blank" class="btn-icon">
+                <svg class="icon"><use href="#icon-github" /></svg>
+              </a>
+              <a
+                href="https://discord.com/users/1377301109827174660"
+                target="_blank"
+                class="btn-icon discord"
+              >
+                <svg class="icon"><use href="#icon-discord" /></svg>
+              </a>
+            </section>
           </div>
         </div>
-      </section>
-    </div>
-    <div class="right">
-      <section class="card about-me">
-        <h2 class="about-me-title">ABOUT<span>ME</span></h2>
-        <p>
-          Hello, I'm mathis, a 16-year-old, living in Germany. I started coding when I was 13 and
-          now mostly work on OSS Projects.
-        </p>
-        <p>Currently building Sono, a local music player.</p>
-        <p>
-          Apart from coding I'm also listening to music or do drawing. Big fan of Ye, Gorillaz and
-          MF DOOM.
-        </p>
-        <span class="about-me-tag">// mathis</span>
-      </section>
-      <section class="card last-played">
-        <LastFmWidget />
-      </section>
+        <section class="card tech-stack">
+          <h3 class="tech-stack-title">Tech<span>Stack</span></h3>
+          <div
+            class="tech-stack-scroll"
+            @mouseenter="$el.style.animationPlayState = 'pause'"
+            @mouseleave="$el.style.animationPlayState = 'running'"
+          >
+            <div class="tech-stack-track">
+              <svg class="tech-icon"><use href="#icon-flutter" /></svg>
+              <svg class="tech-icon"><use href="#icon-dart" /></svg>
+              <svg class="tech-icon"><use href="#icon-vue" /></svg>
+              <svg class="tech-icon"><use href="#icon-javascript" /></svg>
+              <svg class="tech-icon"><use href="#icon-python" /></svg>
+              <svg class="tech-icon"><use href="#icon-go" /></svg>
+              <span class="tech-divider">·</span>
+              <svg class="tech-icon"><use href="#icon-postgres" /></svg>
+              <svg class="tech-icon"><use href="#icon-firebase" /></svg>
+              <svg class="tech-icon"><use href="#icon-docker" /></svg>
+              <svg class="tech-icon"><use href="#icon-git" /></svg>
+              <span class="tech-divider">·</span>
+              <svg class="tech-icon"><use href="#icon-arch" /></svg>
+              <svg class="tech-icon"><use href="#icon-linux" /></svg>
+              <span class="tech-divider">·</span>
+
+              <!--copy 2-->
+              <svg class="tech-icon"><use href="#icon-flutter" /></svg>
+              <svg class="tech-icon"><use href="#icon-dart" /></svg>
+              <svg class="tech-icon"><use href="#icon-vue" /></svg>
+              <svg class="tech-icon"><use href="#icon-javascript" /></svg>
+              <svg class="tech-icon"><use href="#icon-python" /></svg>
+              <svg class="tech-icon"><use href="#icon-go" /></svg>
+              <span class="tech-divider">·</span>
+              <svg class="tech-icon"><use href="#icon-postgres" /></svg>
+              <svg class="tech-icon"><use href="#icon-firebase" /></svg>
+              <svg class="tech-icon"><use href="#icon-docker" /></svg>
+              <svg class="tech-icon"><use href="#icon-git" /></svg>
+              <span class="tech-divider">·</span>
+              <svg class="tech-icon"><use href="#icon-arch" /></svg>
+              <svg class="tech-icon"><use href="#icon-linux" /></svg>
+              <span class="tech-divider">·</span>
+            </div>
+          </div>
+        </section>
+        <section class="card github-card">
+          <GitHubActivity />
+        </section>
+      </div>
+      <div class="right">
+        <section class="card about-me">
+          <h2 class="about-me-title">ABOUT<span>ME</span></h2>
+          <p>
+            Hello, I'm mathis, a 16-year-old, living in Germany. I started coding when I was 13 and
+            now mostly work on OSS Projects.
+          </p>
+          <p>Currently building Sono, a local music player.</p>
+          <p>
+            Apart from coding I'm also listening to music or do drawing. Big fan of Ye, Gorillaz and
+            MF DOOM.
+          </p>
+          <span class="about-me-tag">// mathis</span>
+        </section>
+        <section class="card last-played">
+          <LastFmWidget />
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -111,6 +118,10 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   justify-content: center;
   align-items: center;
   height: 100dvh;
+}
+
+.home-grid {
+  display: contents;
 }
 
 .left {
@@ -143,6 +154,14 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   background-color: var(--card-bg);
   border: solid 2px var(--card-border);
   box-sizing: border-box;
+}
+
+/* ==== GITHUB CARD ==== */
+.github-card {
+  width: calc(754px + 16px + 394px);
+  height: 180px;
+  border-radius: 25px 25px 50px 50px;
+  overflow: hidden;
 }
 
 /* ==== MII VIEWER ==== */
@@ -295,7 +314,7 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   width: 100%;
   max-width: 100%;
   height: 164px;
-  border-radius: 25px 25px 50px 50px;
+  border-radius: 25px;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -360,6 +379,14 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   }
 }
 
+/* ==== GITHUB ACTIVITY ==== */
+.github-card {
+  width: 100%;
+  height: 160px;
+  border-radius: 25px 25px 50px 50px;
+  overflow: hidden;
+}
+
 /* ==== LAST PLAYED ==== */
 .last-played {
   width: 394px;
@@ -382,6 +409,10 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   }
 
   .about-me {
+    border-radius: 25px;
+  }
+
+  .github-card {
     border-radius: 25px;
   }
 }
@@ -415,7 +446,6 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   .tech-stack {
     width: 100%;
     max-width: 450px;
-    border-radius: 25px;
   }
 
   .about-me {
@@ -428,6 +458,12 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
   .last-played {
     width: 100%;
     max-width: 450px;
+  }
+
+  .github-card {
+    width: 100%;
+    max-width: 450px;
+    height: 185px;
   }
 }
 
@@ -476,6 +512,10 @@ import LastFmWidget from '@/components/home/LastFmWidget.vue'
     width: 100%;
     height: auto;
     min-height: 130px;
+  }
+
+  .github-card {
+    height: 185px;
   }
 }
 </style>
