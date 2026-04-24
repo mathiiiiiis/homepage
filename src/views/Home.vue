@@ -159,7 +159,7 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
 /* ==== GITHUB CARD ==== */
 .github-card {
   width: calc(754px + 16px + 394px);
-  height: 180px;
+  height: 185px;
   border-radius: 25px 25px 50px 50px;
   overflow: hidden;
 }
@@ -382,7 +382,7 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
 /* ==== GITHUB ACTIVITY ==== */
 .github-card {
   width: 100%;
-  height: 160px;
+  height: 185px;
   border-radius: 25px 25px 50px 50px;
   overflow: hidden;
 }
