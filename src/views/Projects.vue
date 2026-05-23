@@ -5,7 +5,7 @@ const featured = {
     'A local music player for a lot of devices (kinda). Built with Flutter. Development started in April 2025. Got restarted in March 2026.',
   tech: ['icon-flutter', 'icon-dart'],
   github: 'https://github.com/appsono/sono-new',
-  website: 'https://sono.wtf',
+  website: 'https://play.google.com/store/apps/details?id=wtf.sono.app',
   images: ['/images/projects/sono-1.png'],
 }
 
