@@ -17,6 +17,14 @@ const projects = [
     github: 'https://github.com/mathiiiiiis/blog-but-different',
     website: 'https://blog.mathiiis.de',
     images: ['/images/projects/blog-1.png'],
+  }
+  {
+    title: 'Global Chat Bot',
+    description: 'Open-source Global Chat bot for Nerimity, with a real outbound queue so it survives the rate limits.',
+    tech: ['icon-javascript'],
+    github: 'https://github.com/mathiiiiiis/global-chat-bot',
+    website: 'https://nerimity.com/bot/1778634213063569408?perms=2',
+    images: ['/images/projects/nerimity-bot-1.png'],
   },
   {
     title: "Don't Click It",
