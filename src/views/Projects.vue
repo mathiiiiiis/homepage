@@ -17,7 +17,7 @@ const projects = [
     github: 'https://github.com/mathiiiiiis/blog-but-different',
     website: 'https://blog.mathiiis.de',
     images: ['/images/projects/blog-1.png'],
-  }
+  },
   {
     title: 'Global Chat Bot',
     description: 'Open-source Global Chat bot for Nerimity, with a real outbound queue so it survives the rate limits.',
