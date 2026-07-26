@@ -25,7 +25,7 @@ const socials = [
   {
     name: 'Nerimity',
     handle: 'mathis:0000',
-    href: 'https://nerimity.com/',
+    href: 'https://nerimity.com/app/profile/1557301684324179969',
     icon: 'icon-nerimity',
     color: '#4c93ff',
   },
@@ -42,6 +42,15 @@ const webButtons = [
     label: 'Powered by Debian',
     src: '/images/webButtons/powered-by-debian.gif',
     href: 'https://debian.org',
+  },
+  {
+    label: 'Aynthing but Chrome',
+    src: '/images/webButtons/anythingbut.gif',
+  },
+  {
+    label: 'Linux today',
+    src: '/images/webButtons/nclinux.gif',
+    href: 'https://kernel.org',
   },
   {
     label: 'mathiiis.de animated',
@@ -95,7 +104,7 @@ const webButtons = [
 </template>
 
 <style lang="css" scoped>
-.social-page {
+.socials-page {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -181,7 +190,7 @@ const webButtons = [
   padding: 16px;
   border-radius: 25px;
   text-decoration: none;
-  color: var(--text-primaty);
+  color: var(--text-primary);
   transition:
     opacity var(--transition-fast),
     transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -221,7 +230,7 @@ const webButtons = [
 
 /* ==== SEPARATOR ==== */
 .separator {
-  width: auto;
+  width: 200px;
   border: none;
   border-top: 2px solid var(--card-border);
   margin: 16px 0;
