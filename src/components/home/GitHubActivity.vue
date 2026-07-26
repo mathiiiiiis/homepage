@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 
 const GITHUB_USERNAME = 'mathiiiiiis'
 
@@ -7,6 +7,27 @@ const weeks = ref([])
 const total = ref(0)
 const loading = ref(true)
 const error = ref(false)
+const scroller = ref(null)
+const selected = ref(null)
+const atStart = ref(true)
+const atEnd = ref(true)
+
+// keep grid pinned to latest week instead of January
+function scrollToRecent() {
+  const el = scroller.value
+  if (el) el.scrollLeft = el.scrollWidth
+}
+
+function onScroll() {
+  const el = scroller.value
+  if (!el) return
+  atStart.value = el.scrollLeft <= 1
+  atEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1
+}
+
+function select(day) {
+  selected.value = day
+}
 
 onMounted(async () => {
   try {
@@ -23,10 +44,13 @@ onMounted(async () => {
       grouped.push(days.slice(i, i + 7))
     }
     weeks.value = grouped
+    loading.value = false
+    await nextTick()
+    scrollToRecent()
+    onScroll()
   } catch (e) {
     console.error('[GitHub Activity] Fetch failed:', e)
     error.value = true
-  } finally {
     loading.value = false
   }
 })
@@ -38,7 +62,11 @@ onMounted(async () => {
       <h3 class="gh-title">GitHub<span>Activity</span></h3>
       <div class="gh-meta">
         <span v-if="!loading && !error" class="gh-count">
-          {{ total.toLocaleString() }} contributions (year)
+          <template v-if="selected">
+            {{ selected.count }} contribution{{ selected.count !== 1 ? 's' : '' }} ·
+            {{ selected.date }}
+          </template>
+          <template v-else> {{ total.toLocaleString() }} contributions (year) </template>
         </span>
         <div class="gh-legend">
           <div class="gh-legend-cell" data-level="0" />
@@ -59,18 +87,23 @@ onMounted(async () => {
     </div>
     <div v-else-if="error" class="gh-error">failed to load</div>
 
-    <div v-else class="gh-scroll">
-      <div class="gh-grid">
-        <div v-for="(week, wi) in weeks" :key="wi" class="gh-week">
-          <div
-            v-for="(day, di) in week"
-            :key="di"
-            class="gh-cell"
-            :data-level="day.level"
-            :title="`${day.count} contribution${day.count !== 1 ? 's' : ''} · ${day.date}`"
-          />
+    <div v-else class="gh-scroll-wrap">
+      <div ref="scroller" class="gh-scroll" @scroll.passive="onScroll">
+        <div class="gh-grid">
+          <div v-for="(week, wi) in weeks" :key="wi" class="gh-week">
+            <div
+              v-for="(day, di) in week"
+              :key="di"
+              class="gh-cell"
+              :data-level="day.level"
+              :title="`${day.count} contribution${day.count !== 1 ? 's' : ''} · ${day.date}`"
+              @click="select(day)"
+            />
+          </div>
         </div>
       </div>
+      <div class="gh-fade gh-fade--left" :class="{ 'is-on': !atStart }" />
+      <div class="gh-fade gh-fade--right" :class="{ 'is-on': !atEnd }" />
     </div>
   </div>
 </template>
@@ -154,7 +187,7 @@ onMounted(async () => {
 .gh-legend-cell[data-level='4'] { background: var(--cell-4); }
 
 .gh-scroll {
-  flex: 1;
+  height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -162,6 +195,31 @@ onMounted(async () => {
 
 .gh-scroll::-webkit-scrollbar {
   display: none;
+}
+
+.gh-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 32px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  display: none;
+}
+
+.gh-fade.is-on {
+  opacity: 1;
+}
+
+.gh-fade--left {
+  left: 0;
+  background: linear-gradient(to right, var(--card-bg), transparent);
+}
+
+.gh-fade--left {
+  right: 0;
+  background: linear-gradient(to right, var(--card-bg), transparent);
 }
 
 .gh-grid {
@@ -185,7 +243,7 @@ onMounted(async () => {
   transition:
     opacity 100ms ease,
     transform 100ms ease;
-  cursor: default;
+  cursor: pointer;
 }
 
 .gh-cell[data-level='0'] { background: var(--cell-0); }
@@ -195,7 +253,6 @@ onMounted(async () => {
 .gh-cell[data-level='4'] { background: var(--cell-4); }
 
 .gh-cell:hover {
-  opacity: 0.7;
   transform: scale(1.25);
 }
 
@@ -220,5 +277,24 @@ onMounted(async () => {
   font-size: 13px;
   color: var(--text-secondary);
   opacity: 0.5;
+}
+
+/* ==== MOBILE ==== */
+@media (max-width: 500px) {
+  .gh {
+    padding: 16px 18px 14px;
+  }
+
+  .gh-title {
+    font-size: 16px;
+  }
+
+  .gh-legend {
+    display: none;
+  }
+
+  .gh-fade {
+    display: block;
+  }
 }
 </style>
