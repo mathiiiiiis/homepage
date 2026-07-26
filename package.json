@@ -19,8 +19,10 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@vitejs/plugin-vue": "^6.0.6",
+    "@vitest/eslint-plugin": "^1.6.24",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.10.5",
     "eslint-plugin-vue": "~10.8.0",
     "globals": "^17.5.0",
     "prettier": "^3.8.3",

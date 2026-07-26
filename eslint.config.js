@@ -4,7 +4,6 @@ import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 import pluginPlaywright from 'eslint-plugin-playwright'
 import pluginVitest from '@vitest/eslint-plugin'
-import pluginOxlint from 'eslint-plugin-oxlint'
 import skipFormatting from 'eslint-config-prettier/flat'
 
 export default defineConfig([
@@ -35,8 +34,6 @@ export default defineConfig([
     ...pluginVitest.configs.recommended,
     files: ['src/**/__tests__/*'],
   },
-
-  ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
 
   skipFormatting,
 ])
