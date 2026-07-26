@@ -98,8 +98,8 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
           </p>
           <p>Currently building Sono, a local music player.</p>
           <p>
-            Apart from coding I'm also listening to music or do drawing. Big fan of Ye, Gorillaz and
-            MF DOOM.
+            Apart from coding I'm also listening to music or do drawing. Big fan of Ye, JPEGMAFIA
+            and femtanyl.
           </p>
           <span class="about-me-tag">// mathis</span>
         </section>
