@@ -6,14 +6,20 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/views/Home.vue'),
+      component: () => import('@/views/HomeView.vue'),
       meta: { title: 'Home' },
     },
     {
       path: '/projects',
       name: 'projects',
-      component: () => import('@/views/Projects.vue'),
+      component: () => import('@/views/ProjectsView.vue'),
       meta: { title: 'Projects' },
+    },
+    {
+      path: '/socials',
+      name: 'socials',
+      component: () => import('@/views/SocialsView.vue'),
+      meta: { title: 'Socials' },
     },
   ],
 })

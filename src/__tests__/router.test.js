@@ -16,9 +16,17 @@ describe('router', () => {
     expect(projects.meta.title).toBe('Projects')
   })
 
+  it('has a projects route at /socials', () => {
+    const projects = router.getRoutes().find((r) => r.path === '/socials')
+    expect(projects).toBeDefined()
+    expect(projects.name).toBe('socials')
+    expect(projects.meta.title).toBe('Socials')
+  })
+
+
   it('does not expose unexpected routes', () => {
     const paths = router.getRoutes().map((r) => r.path)
-    expect(paths).toEqual(expect.arrayContaining(['/', '/projects']))
-    expect(paths.length).toBe(2)
+    expect(paths).toEqual(expect.arrayContaining(['/', '/projects', '/socials']))
+    expect(paths.length).toBe(3)
   })
 })
