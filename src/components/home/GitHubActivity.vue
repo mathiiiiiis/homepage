@@ -280,6 +280,35 @@ onMounted(async () => {
 }
 
 /* ==== MOBILE ==== */
+@media (max-width: 820px) {
+  .gh-title {
+    font-size: 16px;
+    order: 1;
+  }
+
+  .gh-top {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+
+  .gh-meta {
+    display: contents;
+  }
+
+  .gh-legend {
+    order: 2;
+  }
+
+  .gh-count {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .gh-fade {
+    display: block;
+  }
+}
+
 @media (max-width: 500px) {
   .gh {
     padding: 16px 18px 14px;
@@ -287,14 +316,6 @@ onMounted(async () => {
 
   .gh-title {
     font-size: 16px;
-  }
-
-  .gh-legend {
-    display: none;
-  }
-
-  .gh-fade {
-    display: block;
   }
 }
 </style>
