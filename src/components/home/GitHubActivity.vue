@@ -9,20 +9,11 @@ const loading = ref(true)
 const error = ref(false)
 const scroller = ref(null)
 const selected = ref(null)
-const atStart = ref(true)
-const atEnd = ref(true)
 
 // keep grid pinned to latest week instead of January
 function scrollToRecent() {
   const el = scroller.value
   if (el) el.scrollLeft = el.scrollWidth
-}
-
-function onScroll() {
-  const el = scroller.value
-  if (!el) return
-  atStart.value = el.scrollLeft <= 1
-  atEnd.value = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1
 }
 
 function select(day) {
@@ -47,7 +38,6 @@ onMounted(async () => {
     loading.value = false
     await nextTick()
     scrollToRecent()
-    onScroll()
   } catch (e) {
     console.error('[GitHub Activity] Fetch failed:', e)
     error.value = true
@@ -88,7 +78,7 @@ onMounted(async () => {
     <div v-else-if="error" class="gh-error">failed to load</div>
 
     <div v-else class="gh-scroll-wrap">
-      <div ref="scroller" class="gh-scroll" @scroll.passive="onScroll">
+      <div ref="scroller" class="gh-scroll">
         <div class="gh-grid">
           <div v-for="(week, wi) in weeks" :key="wi" class="gh-week">
             <div
@@ -186,6 +176,12 @@ onMounted(async () => {
 .gh-legend-cell[data-level='3'] { background: var(--cell-3); }
 .gh-legend-cell[data-level='4'] { background: var(--cell-4); }
 
+.gh-scroll-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
 .gh-scroll {
   height: 100%;
   overflow-x: auto;
@@ -195,31 +191,6 @@ onMounted(async () => {
 
 .gh-scroll::-webkit-scrollbar {
   display: none;
-}
-
-.gh-fade {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 32px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 150ms ease;
-  display: none;
-}
-
-.gh-fade.is-on {
-  opacity: 1;
-}
-
-.gh-fade--left {
-  left: 0;
-  background: linear-gradient(to right, var(--card-bg), transparent);
-}
-
-.gh-fade--left {
-  right: 0;
-  background: linear-gradient(to right, var(--card-bg), transparent);
 }
 
 .gh-grid {
@@ -281,15 +252,20 @@ onMounted(async () => {
 
 /* ==== MOBILE ==== */
 @media (max-width: 820px) {
-  .gh-title {
-    font-size: 16px;
-    order: 1;
+  .gh {
+    gap: 6px;
+    padding: 14px 24px 14px;
   }
 
   .gh-top {
     flex-wrap: wrap;
     gap: 4px 12px;
   }
+
+  .gh-title {
+    order: 1;
+  }
+
 
   .gh-meta {
     display: contents;
@@ -311,7 +287,7 @@ onMounted(async () => {
 
 @media (max-width: 500px) {
   .gh {
-    padding: 16px 18px 14px;
+    padding: 14px 18px 14px;
   }
 
   .gh-title {
