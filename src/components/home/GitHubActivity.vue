@@ -92,8 +92,6 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="gh-fade gh-fade--left" :class="{ 'is-on': !atStart }" />
-      <div class="gh-fade gh-fade--right" :class="{ 'is-on': !atEnd }" />
     </div>
   </div>
 </template>
@@ -278,10 +276,6 @@ onMounted(async () => {
   .gh-count {
     order: 3;
     flex-basis: 100%;
-  }
-
-  .gh-fade {
-    display: block;
   }
 }
 
