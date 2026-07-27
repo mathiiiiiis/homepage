@@ -44,8 +44,22 @@ const webButtons = [
     href: 'https://debian.org',
   },
   {
-    label: 'Aynthing but Chrome',
+    label: 'Made with Neovim',
+    src: '/images/webButtons/neovim.gif',
+    href: 'https://neovim.io',
+  },
+  {
+    label: 'Get Firefox',
+    src: '/images/webButtons/firefox.gif',
+    href: 'https://firefox.com/download',
+  },
+  {
+    label: 'Anything but Chrome',
     src: '/images/webButtons/anythingbut.gif',
+  },
+  {
+    label: 'Powered by Linux',
+    src: '/images/webButtons/gnu-linux.gif',
   },
   {
     label: 'Linux today',
