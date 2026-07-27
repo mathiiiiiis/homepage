@@ -39,6 +39,12 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
                   <use href="#icon-discord" />
                 </svg>
               </a>
+              <button class="btn-icon btn-more" @click="$router.push('/socials')" aria-label="All socials">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M7.12 2.88a1.25 1.25 0 0 1 1.77 0L17.3 11.29a.996.996 0 0 1 0 1.41l-8.41 8.41c-.49.49-1.28.49-1.77 0s-.49-1.28 0-1.77L14.46 12 7.11 4.65c-.48-.49-.48-1.28.01-1.77z" />
+                </svg>
+              </button>
             </section>
           </div>
         </div>
@@ -291,6 +297,18 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
   justify-content: center;
   background: #2a2a2a;
   cursor: pointer;
+}
+
+.btn-more {
+  background: var(--card-bg);
+  border: solid 2px var(--card-border);
+  color: var(--text-secondary);
+  border-radius: 25px 50px 50px 25px;
+}
+
+.btn-more .icon {
+  width: 32px !important;
+  height: 32px !important;
 }
 
 .btn-projects,
