@@ -10,7 +10,7 @@ const socials = [
   },
   {
     name: 'Discord',
-    handle: 'mathis',
+    handle: '@mathhiiss',
     href: 'https://github.com/users/1377301109827174660',
     icon: 'icon-discord',
     color: '#5865f2',
@@ -55,12 +55,17 @@ const webButtons = [
   {
     label: 'mathiiis.de animated',
     src: '/images/webButtons/mathiiis-de.gif',
+    my: true,
   },
   {
-    label: 'mathiiis.de animated',
+    label: 'mathiiis.de static',
     src: '/images/webButtons/mathiiis-de-no-anim.gif',
+    my: true,
   },
 ]
+
+const otherButtons = webButtons.filter((b) => !b.my)
+const myButtons = webButtons.filter((b) => b.my)
 </script>
 
 <template>
@@ -95,9 +100,16 @@ const webButtons = [
     <section class="buttons-section">
       <h2 class="section-title">WEB<span>BUTTONS</span></h2>
       <div class="button-wall">
-        <a v-for="button in webButtons" :key="button.label" :href="button.href" target="_blank" class="web-button">
-          <img :src="button.src" :alt="button.label" />
-        </a>
+        <div class="wall-row">
+          <a v-for="button in otherButtons" :key="button.label" :href="button.href" target="_blank" class="web-button">
+            <img :src="button.src" :alt="button.label" />
+          </a>
+        </div>
+        <div class="wall-row">
+          <a v-for="button in myButtons" :key="button.label" :href="button.href" target="_blank" class="web-button">
+            <img :src="button.src" :alt="button.label" />
+          </a>
+        </div>
       </div>
     </section>
   </div>
@@ -260,8 +272,15 @@ const webButtons = [
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 22px;
   max-width: 480px;
+}
+
+.wall-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
 }
 
 .web-button {
@@ -270,6 +289,8 @@ const webButtons = [
   display: block;
   box-sizing: content-box;
 }
+
+
 
 a.web-button {
   transition:
