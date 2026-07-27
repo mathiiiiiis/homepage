@@ -30,57 +30,102 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
             <section class="button-row">
               <button class="btn-projects" @click="$router.push('/projects')">Projects</button>
               <a href="https://github.com/mathiiiiiis" target="_blank" class="btn-icon">
-                <svg class="icon"><use href="#icon-github" /></svg>
+                <svg class="icon">
+                  <use href="#icon-github" />
+                </svg>
               </a>
-              <a
-                href="https://discord.com/users/1377301109827174660"
-                target="_blank"
-                class="btn-icon discord"
-              >
-                <svg class="icon"><use href="#icon-discord" /></svg>
+              <a href="https://github.com/users/1377301109827174660" target="_blank" class="btn-icon discord">
+                <svg class="icon">
+                  <use href="#icon-discord" />
+                </svg>
               </a>
             </section>
           </div>
         </div>
         <section class="card tech-stack">
           <h3 class="tech-stack-title">Tech<span>Stack</span></h3>
-          <div
-            class="tech-stack-scroll"
-            @mouseenter="$el.style.animationPlayState = 'pause'"
-            @mouseleave="$el.style.animationPlayState = 'running'"
-          >
+          <div class="tech-stack-scroll" @mouseenter="$el.style.animationPlayState = 'pause'"
+            @mouseleave="$el.style.animationPlayState = 'running'">
             <div class="tech-stack-track">
-              <svg class="tech-icon"><use href="#icon-flutter" /></svg>
-              <svg class="tech-icon"><use href="#icon-dart" /></svg>
-              <svg class="tech-icon"><use href="#icon-vue" /></svg>
-              <svg class="tech-icon"><use href="#icon-javascript" /></svg>
-              <svg class="tech-icon"><use href="#icon-python" /></svg>
-              <svg class="tech-icon"><use href="#icon-go" /></svg>
+              <svg class="tech-icon">
+                <use href="#icon-flutter" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-dart" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-vue" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-javascript" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-python" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-go" />
+              </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon"><use href="#icon-postgres" /></svg>
-              <svg class="tech-icon"><use href="#icon-firebase" /></svg>
-              <svg class="tech-icon"><use href="#icon-docker" /></svg>
-              <svg class="tech-icon"><use href="#icon-git" /></svg>
+              <svg class="tech-icon">
+                <use href="#icon-postgres" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-firebase" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-docker" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-git" />
+              </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon"><use href="#icon-arch" /></svg>
-              <svg class="tech-icon"><use href="#icon-linux" /></svg>
+              <svg class="tech-icon">
+                <use href="#icon-arch" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-linux" />
+              </svg>
               <span class="tech-divider">·</span>
 
               <!--copy 2-->
-              <svg class="tech-icon"><use href="#icon-flutter" /></svg>
-              <svg class="tech-icon"><use href="#icon-dart" /></svg>
-              <svg class="tech-icon"><use href="#icon-vue" /></svg>
-              <svg class="tech-icon"><use href="#icon-javascript" /></svg>
-              <svg class="tech-icon"><use href="#icon-python" /></svg>
-              <svg class="tech-icon"><use href="#icon-go" /></svg>
+              <svg class="tech-icon">
+                <use href="#icon-flutter" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-dart" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-vue" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-javascript" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-python" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-go" />
+              </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon"><use href="#icon-postgres" /></svg>
-              <svg class="tech-icon"><use href="#icon-firebase" /></svg>
-              <svg class="tech-icon"><use href="#icon-docker" /></svg>
-              <svg class="tech-icon"><use href="#icon-git" /></svg>
+              <svg class="tech-icon">
+                <use href="#icon-postgres" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-firebase" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-docker" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-git" />
+              </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon"><use href="#icon-arch" /></svg>
-              <svg class="tech-icon"><use href="#icon-linux" /></svg>
+              <svg class="tech-icon">
+                <use href="#icon-arch" />
+              </svg>
+              <svg class="tech-icon">
+                <use href="#icon-linux" />
+              </svg>
               <span class="tech-divider">·</span>
             </div>
           </div>
@@ -374,6 +419,7 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
