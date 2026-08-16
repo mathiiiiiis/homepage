@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import LUTShaderMaterial from '@/vendor/LUTShaderMaterial.js'
 
 // ==== rig facts from exported glb ====
 // NW4F rotates local bone aces. Build look delta in world space,
@@ -14,6 +15,21 @@ const MAX_PITCH = 0.43 // ~24deg
 const SPINE_FOLLOW = 0.25
 const DAMPING = 0.12
 const SETTLE_EPSILON = 0.0004
+
+// FFLModulateType per mash, picks specular/fresnel LUT curve
+const MODULATE_TYPE = {
+  Faceline: 0,
+  Nose: 2,
+  Hair: 4,
+  Mask: 6,
+  Noseline: 7,
+  clothes_m_ArmsShortsleeve: 9,
+  clothes_m_ShirtShortsleeve: 9,
+  clothes_m_Shorts: 10,
+}
+
+const MODE_CONSTANT = 0
+const MODE_TEXTURE_DIRECT = 1
 
 const FOV = 20
 const FRAME_MARGIN = 1.12
@@ -30,11 +46,8 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   const scene = new THREE.Scene()
   const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 40)
 
-  //two cheap lights, disable metalness on load
-  const key = new THREE.DirectionalLight(0xffffff, 2.1)
-  key.position.set(1.4, 2.6, 2.4)
-  scene.add(key)
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8a99, 1.5))
+  //LUT shader writes sRGB and carries own lights
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace
 
   let model = null
   let head = null
@@ -155,14 +168,39 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     model.traverse((o) => {
       if (!o.isMesh) return
       o.frustumCulled = false
-      const m = o.material
-      m.metalness = 0
-      m.roughness = 0.72
+
+      const src = o.material
+      const hasMap = Boolean(src.map)
+
+      if (hasMap) {
+        //shader samples raw sRGB, supress GPU decode
+        src.map.colorSpace = THREE.NoColorSpace
+        src.map.generateMipmaps = true
+        src.map.minFilter = THREE.LinearMipmapLinearFilter
+        src.map.anisotropy = renderer.capabilities.getMaxAnisotropy()
+        src.map.needsUpdate = true
+      }
+
+      const m = new LUTShaderMaterial({
+        modulateMode: hasMap ? MODE_TEXTURE_DIRECT : MODE_CONSTANT,
+        modulateType: MODULATE_TYPE[o.name] ?? 0,
+        //gltf baseColorFactor is linear, convert to sRGB
+        color: src.color.clone().convertLinearToSRGB(),
+        map: src.map,
+        transparent: src.transparent,
+        opacity: src.opacity,
+        side: src.side,
+      })
+      m.name = src.name
+
       //prevent belded decals from writing depth over eyes
       if (m.transparent) {
         m.depthWrite = false
-        o.renderOrder = m.name === 'Noseline' ? 2 : 1
+        o.renderOrder = o.name === 'Noseline' ? 2 : 1
       }
+
+      o.material = m
+      src.dispose()
     })
 
     head = model.getObjectByName(HEAD_BONE)
