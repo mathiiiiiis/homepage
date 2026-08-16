@@ -31,6 +31,24 @@ const socials = [
   },
 ]
 
+const credits = [
+  {
+    name: 'Mii Creator',
+    role: 'Mii editor and model export',
+    href: 'https://mii.nxw.pw',
+  },
+  {
+    name: 'FFL.js by Arian Kordi',
+    role: 'Miitomo LUT shader, AGPL-3.0',
+    href: 'https://github.com/ariankordi/FFL.js',
+  },
+  {
+    name: 'FFL decompilation by AboodXD',
+    role: 'the renderer both are built on',
+    href: 'https://github.com/aboood40091/ffl',
+  },
+]
+
 // 88x31 buttons
 const webButtons = [
   {
@@ -86,9 +104,15 @@ const myButtons = webButtons.filter((b) => b.my)
   <div class="socials-page">
     <header class="page-header">
       <router-link to="/" class="btn-back" aria-label="Back to home">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <svg
+          class="icon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
           <path
-            d="M16.88 2.88a1.25 1.25 0 0 0-1.77 0L6.7 11.29a.996.996 0 0 0 0 1.41l8.41 8.41c.49.49 1.28.49 1.77 0s.49-1.28 0-1.77L9.54 12l7.35-7.35c.48-.49.48-1.28-.01-1.77z" />
+            d="M16.88 2.88a1.25 1.25 0 0 0-1.77 0L6.7 11.29a.996.996 0 0 0 0 1.41l8.41 8.41c.49.49 1.28.49 1.77 0s.49-1.28 0-1.77L9.54 12l7.35-7.35c.48-.49.48-1.28-.01-1.77z"
+          />
         </svg>
       </router-link>
       <h1 class="page-title">MY<span>SOCIALS</span></h1>
@@ -96,7 +120,14 @@ const myButtons = webButtons.filter((b) => b.my)
     </header>
 
     <section class="socials-grid">
-      <a v-for="social in socials" :key="social.name" :href="social.href" target="_blank" rel="noopener noreferrer" class="card social-tile">
+      <a
+        v-for="social in socials"
+        :key="social.name"
+        :href="social.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="card social-tile"
+      >
         <div class="social-icon" :style="{ background: social.color }">
           <svg class="icon" aria-hidden="true">
             <use :href="'#' + social.icon" />
@@ -107,6 +138,19 @@ const myButtons = webButtons.filter((b) => b.my)
           <p class="social-handle">{{ social.handle }}</p>
         </div>
       </a>
+    </section>
+
+    <hr class="separator" />
+
+    <section class="credits-section">
+      <h2 class="section-title">CRED<span>ITS</span></h2>
+      <p class="credits-note">The reason why the Mii on the home page is possible.</p>
+      <ul class="credits-list">
+        <li v-for="credit in credits" :key="credit.name">
+          <a :href="credit.href" target="_blank" rel="noopener noreferrer">{{ credit.name }}</a>
+          <span>{{ credit.role }}</span>
+        </li>
+      </ul>
     </section>
 
     <hr class="separator" />
@@ -282,6 +326,48 @@ const myButtons = webButtons.filter((b) => b.my)
   margin: 16px 0;
 }
 
+/* ==== CREDITS ==== */
+.credits-section {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+}
+
+.credits-note {
+  margin-top: 12px;
+  font-family: var(--font-secondary);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.credits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+  list-style: none;
+}
+
+.credits-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.credits-list a {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.credits-list span {
+  font-family: var(--font-secondary);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
 /* ==== WEB BUTTONS ==== */
 .buttons-section {
   display: flex;
@@ -323,8 +409,6 @@ const myButtons = webButtons.filter((b) => b.my)
   display: block;
   box-sizing: content-box;
 }
-
-
 
 a.web-button {
   transition:
