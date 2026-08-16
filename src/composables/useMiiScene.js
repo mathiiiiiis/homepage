@@ -15,9 +15,8 @@ const SPINE_FOLLOW = 0.25
 const DAMPING = 0.12
 const SETTLE_EPSILON = 0.0004
 
-//aim near center of head
-const CAMERA_TARGET = new THREE.Vector3(0, 1.5, 0)
-const CAMERA_POS = new THREE.Vector3(0, 1.62, 3.1)
+const FOV = 20
+const FRAME_MARGIN = 1.12
 
 export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   const renderer = new THREE.WebGLRenderer({
@@ -29,9 +28,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
   const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 20)
-  camera.position.copy(CAMERA_POS)
-  camera.lookAt(CAMERA_TARGET)
+  const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 40)
 
   //two cheap lights, disable metalness on load
   const key = new THREE.DirectionalLight(0xffffff, 2.1)
@@ -180,7 +177,24 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     headParentWorldInv = headParentWorld.clone().invert()
 
     scene.add(model)
+    frameModel()
     needsRender = true
+  }
+
+  function frameModel() {
+    const box = new THREE.Box3().setFromObject(model)
+    const size = new THREE.Vector3()
+    const centre = new THREE.Vector3()
+    box.getSize(size)
+    box.getCenter(centre)
+
+    const visibleHeight = size.y * FRAME_MARGIN
+    const dist = visibleHeight / 2 / Math.tan((FOV / 2) * (Math.PI / 180))
+
+    camera.position.set(centre.x, centre.y, centre.z + dist)
+    camera.lookAt(centre)
+    camera.far = dist + size.length() * 2
+    camera.updateProjectionMatrix()
   }
 
   new GLTFLoader().load(
