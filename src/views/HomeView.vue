@@ -3,8 +3,6 @@ import MiiViewer from '@/components/home/MiiViewer.vue'
 import ProfilePicture from '@/components/home/ProfilePicture.vue'
 import LastFmWidget from '@/components/home/LastFmWidget.vue'
 import GitHubActivity from '@/components/home/GitHubActivity.vue'
-import { usePreloadImages } from '@/composables/usePreloadImages'
-usePreloadImages()
 </script>
 
 <template>
@@ -31,20 +29,42 @@ usePreloadImages()
             </section>
             <section class="button-row">
               <button class="btn-projects" @click="$router.push('/projects')">Projects</button>
-              <a href="https://github.com/mathiiiiiis" target="_blank" rel="noopener noreferrer" class="btn-icon" aria-label="GitHub">
+              <a
+                href="https://github.com/mathiiiiiis"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-icon"
+                aria-label="GitHub"
+              >
                 <svg class="icon">
                   <use href="#icon-github" />
                 </svg>
               </a>
-              <a href="https://discord.com/users/1377301109827174660" target="_blank" rel="noopener noreferrer" class="btn-icon discord" aria-label="Discord">
+              <a
+                href="https://discord.com/users/1377301109827174660"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-icon discord"
+                aria-label="Discord"
+              >
                 <svg class="icon">
                   <use href="#icon-discord" />
                 </svg>
               </a>
-              <button class="btn-icon btn-more" @click="$router.push('/socials')" aria-label="All socials">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <button
+                class="btn-icon btn-more"
+                @click="$router.push('/socials')"
+                aria-label="All socials"
+              >
+                <svg
+                  class="icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path
-                    d="M7.12 2.88a1.25 1.25 0 0 1 1.77 0L17.3 11.29a.996.996 0 0 1 0 1.41l-8.41 8.41c-.49.49-1.28.49-1.77 0s-.49-1.28 0-1.77L14.46 12 7.11 4.65c-.48-.49-.48-1.28.01-1.77z" />
+                    d="M7.12 2.88a1.25 1.25 0 0 1 1.77 0L17.3 11.29a.996.996 0 0 1 0 1.41l-8.41 8.41c-.49.49-1.28.49-1.77 0s-.49-1.28 0-1.77L14.46 12 7.11 4.65c-.48-.49-.48-1.28.01-1.77z"
+                  />
                 </svg>
               </button>
             </section>
@@ -225,6 +245,11 @@ usePreloadImages()
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mii-viewer :deep(.mii-model) {
+  width: 100%;
+  height: 100%;
 }
 
 .mii-viewer :deep(.mii-container) {

@@ -12,6 +12,7 @@
     "test": "npx vitest run"
   },
   "dependencies": {
+    "three": "^0.185.1",
     "vue": "^3.5.33",
     "vue-router": "^5.0.4"
   },
