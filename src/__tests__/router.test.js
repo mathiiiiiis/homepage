@@ -24,9 +24,14 @@ describe('router', () => {
   })
 
 
+  it('redirects unknown paths to home', () => {
+    const resolved = router.resolve('/does-not-exist')
+    expect(resolved.matched[0].redirect).toBe('/')
+  })
+
   it('does not expose unexpected routes', () => {
     const paths = router.getRoutes().map((r) => r.path)
     expect(paths).toEqual(expect.arrayContaining(['/', '/projects', '/socials']))
-    expect(paths.length).toBe(3)
+    expect(paths.length).toBe(4)
   })
 })

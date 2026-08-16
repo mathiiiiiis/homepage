@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap');
-
 *,
 *::before,
 *::after {
@@ -125,6 +122,13 @@ a:hover {
   color: var(--text-secondary);
 }
 
+/* ==== FOCUS ==== */
+:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 /* ==== IDK VRO ==== */
 .icon {
   width: 32px;
@@ -148,4 +152,16 @@ a:hover {
 .page-leave-to {
   opacity: 0;
   transform: rotateY(-8px);
+}
+
+/* ==== REDUCED MOTION ==== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

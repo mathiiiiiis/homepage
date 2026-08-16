@@ -48,7 +48,7 @@ const projects = [
 <template>
   <div class="projects-page">
     <header class="page-header">
-      <router-link to="/" class="btn-back">
+      <router-link to="/" class="btn-back" aria-label="Back to home">
         <svg
           class="icon"
           xmlns="http://www.w3.org/2000/svg"
@@ -78,8 +78,14 @@ const projects = [
           </div>
         </div>
         <div class="featured-buttons">
-          <a :href="featured.website" target="_blank" class="btn-website">Website</a>
-          <a :href="featured.github" target="_blank" class="btn-icon">
+          <a :href="featured.website" target="_blank" rel="noopener noreferrer" class="btn-website">Website</a>
+          <a
+            :href="featured.github"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-icon"
+            :aria-label="featured.title + ' on GitHub'"
+          >
             <svg class="icon"><use href="#icon-github" /></svg>
           </a>
         </div>
@@ -89,8 +95,11 @@ const projects = [
           <img
             v-if="featured.images.length"
             :src="featured.images[0]"
-            :alt="featured.title"
+            :alt="featured.title + ' screenshot'"
             class="preview-img"
+            width="500"
+            height="380"
+            decoding="async"
           />
         </div>
       </div>
@@ -109,8 +118,12 @@ const projects = [
           <img
             v-if="project.images.length"
             :src="project.images[0]"
-            :alt="project.title"
+            :alt="project.title + ' screenshot'"
             class="preview-img"
+            width="800"
+            height="380"
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <div class="project-info">
@@ -125,10 +138,16 @@ const projects = [
               </svg>
             </div>
             <div class="project-buttons">
-              <a v-if="project.website" :href="project.website" target="_blank" class="btn-website">
+              <a v-if="project.website" :href="project.website" target="_blank" rel="noopener noreferrer" class="btn-website">
                 Website
               </a>
-              <a :href="project.github" target="_blank" class="btn-icon-sm">
+              <a
+                :href="project.github"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-icon-sm"
+                :aria-label="project.title + ' on GitHub'"
+              >
                 <svg class="icon"><use href="#icon-github" /></svg>
               </a>
             </div>
@@ -337,7 +356,7 @@ const projects = [
 }
 
 .btn-back {
-  position: absolute;
+  position: fixed;
   top: 24px;
   left: 24px;
   width: 48px;

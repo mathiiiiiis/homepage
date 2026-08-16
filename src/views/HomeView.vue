@@ -3,6 +3,8 @@ import MiiViewer from '@/components/home/MiiViewer.vue'
 import ProfilePicture from '@/components/home/ProfilePicture.vue'
 import LastFmWidget from '@/components/home/LastFmWidget.vue'
 import GitHubActivity from '@/components/home/GitHubActivity.vue'
+import { usePreloadImages } from '@/composables/usePreloadImages'
+usePreloadImages()
 </script>
 
 <template>
@@ -19,22 +21,22 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
               <div class="about-short-header">
                 <ProfilePicture />
                 <div class="about-short-content">
-                  <h3>Hello I'm</h3>
+                  <p class="greeting">Hello I'm</p>
                   <h1>mathis</h1>
                 </div>
               </div>
               <div class="about-short-description">
-                <h5>A 16-year-old software dev from Germany.</h5>
+                <p class="tagline">A 16-year-old software dev from Germany.</p>
               </div>
             </section>
             <section class="button-row">
               <button class="btn-projects" @click="$router.push('/projects')">Projects</button>
-              <a href="https://github.com/mathiiiiiis" target="_blank" class="btn-icon">
+              <a href="https://github.com/mathiiiiiis" target="_blank" rel="noopener noreferrer" class="btn-icon" aria-label="GitHub">
                 <svg class="icon">
                   <use href="#icon-github" />
                 </svg>
               </a>
-              <a href="https://github.com/users/1377301109827174660" target="_blank" class="btn-icon discord">
+              <a href="https://discord.com/users/1377301109827174660" target="_blank" rel="noopener noreferrer" class="btn-icon discord" aria-label="Discord">
                 <svg class="icon">
                   <use href="#icon-discord" />
                 </svg>
@@ -50,86 +52,85 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
         </div>
         <section class="card tech-stack">
           <h3 class="tech-stack-title">Tech<span>Stack</span></h3>
-          <div class="tech-stack-scroll" @mouseenter="$el.style.animationPlayState = 'pause'"
-            @mouseleave="$el.style.animationPlayState = 'running'">
+          <div class="tech-stack-scroll" aria-label="Tech stack">
             <div class="tech-stack-track">
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-flutter" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-dart" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-vue" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-javascript" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-python" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-go" />
               </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-postgres" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-firebase" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-docker" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-git" />
               </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-arch" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-linux" />
               </svg>
               <span class="tech-divider">·</span>
 
               <!--copy 2-->
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-flutter" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-dart" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-vue" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-javascript" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-python" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-go" />
               </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-postgres" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-firebase" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-docker" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-git" />
               </svg>
               <span class="tech-divider">·</span>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-arch" />
               </svg>
-              <svg class="tech-icon">
+              <svg class="tech-icon" aria-hidden="true">
                 <use href="#icon-linux" />
               </svg>
               <span class="tech-divider">·</span>
@@ -246,10 +247,19 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
   gap: 16px;
 }
 
-.about-short-content h3,
-.about-short-description h5 {
+.greeting,
+.tagline {
+  margin: 0;
   font-weight: 300;
   color: var(--text-secondary);
+}
+
+.greeting {
+  font-size: 30px;
+}
+
+.tagline {
+  font-size: 26px;
 }
 
 .about-short-description {
@@ -406,6 +416,16 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
   width: max-content;
   animation: scroll 20s linear infinite;
   padding-block: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-stack-track {
+    animation: none !important;
+  }
+
+  .tech-stack-scroll {
+    overflow-x: auto;
+  }
 }
 
 .tech-stack-scroll:hover .tech-stack-track {

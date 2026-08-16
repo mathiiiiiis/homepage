@@ -1,10 +1,14 @@
 import { ref, watchEffect } from 'vue'
 
+function systemTheme() {
+  return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+}
+
 let theme
 
 export function useTheme() {
   if (!theme) {
-    theme = ref(localStorage.getItem('theme') || 'dark')
+    theme = ref(localStorage.getItem('theme') || systemTheme())
   }
 
   watchEffect(() => {

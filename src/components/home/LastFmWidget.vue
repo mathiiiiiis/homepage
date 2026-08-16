@@ -3,10 +3,12 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const API_KEY = import.meta.env.VITE_LASTFM_API_KEY
 const USERNAME = import.meta.env.VITE_LASTFM_USERNAME
+const POLL_MS = 10000
 
 const track = ref(null)
 const isPlaying = ref(false)
 const loading = ref(true)
+const error = ref(false)
 let interval = null
 
 async function fetchTrack() {
@@ -14,8 +16,10 @@ async function fetchTrack() {
     const res = await fetch(
       `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${USERNAME}&api_key=${API_KEY}&format=json&limit=1`,
     )
+    if (!res.ok) throw new Error('fetch failed')
     const data = await res.json()
-    const t = data.recenttracks.track[0]
+    const t = data.recenttracks?.track?.[0]
+    if (!t) throw new Error('no tracks')
 
     isPlaying.value = !!t['@attr']?.nowplaying
     track.value = {
@@ -25,25 +29,48 @@ async function fetchTrack() {
       image: t.image.find((i) => i.size === 'extralarge')?.['#text'] || '',
       url: t.url,
     }
+    error.value = false
   } catch (e) {
     console.error('[LAST.FM] Fetch failed:', e)
+    // keep the last good track on screen, only show the error if we never had one
+    if (!track.value) error.value = true
   } finally {
     loading.value = false
   }
 }
 
+function startPolling() {
+  if (interval === null) interval = setInterval(fetchTrack, POLL_MS)
+}
+
+function stopPolling() {
+  clearInterval(interval)
+  interval = null
+}
+
+function onVisibilityChange() {
+  if (document.hidden) {
+    stopPolling()
+  } else {
+    fetchTrack()
+    startPolling()
+  }
+}
+
 onMounted(() => {
   fetchTrack()
-  interval = setInterval(fetchTrack, 10000)
+  startPolling()
+  document.addEventListener('visibilitychange', onVisibilityChange)
 })
 
 onUnmounted(() => {
-  clearInterval(interval)
+  stopPolling()
+  document.removeEventListener('visibilitychange', onVisibilityChange)
 })
 </script>
 
 <template>
-  <a v-if="track" :href="track.url" target="_blank" class="lastfm-link">
+  <a v-if="track" :href="track.url" target="_blank" rel="noopener noreferrer" class="lastfm-link">
     <img
       :key="track.image"
       v-if="track.image"
@@ -72,6 +99,7 @@ onUnmounted(() => {
     </div>
   </a>
   <div v-else-if="loading" class="lastfm-skeleton" />
+  <div v-else-if="error" class="lastfm-error">failed to load</div>
 </template>
 
 <style lang="css" scoped>
@@ -167,10 +195,39 @@ onUnmounted(() => {
   color: var(--text-secondary);
 }
 
-.lastfm.skeleton {
+.lastfm-skeleton {
   width: 100%;
   height: 100%;
   background: var(--icon-bg);
-  border-radius: 16px;
+  border-radius: inherit;
+  animation: lastfm-pulse 1.5s ease-in-out infinite;
+}
+
+.lastfm-error {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+  font-family: var(--font-secondary);
+  font-size: 13px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+@keyframes lastfm-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lastfm-skeleton {
+    animation: none;
+  }
 }
 </style>

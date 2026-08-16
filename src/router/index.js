@@ -21,7 +21,14 @@ const router = createRouter({
       component: () => import('@/views/SocialsView.vue'),
       meta: { title: 'Socials' },
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
+    },
   ],
+  scrollBehavior(to, from, saved) {
+    return saved || { top: 0 }
+  },
 })
 
 router.afterEach((to) => {

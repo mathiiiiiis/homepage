@@ -81,12 +81,14 @@ onMounted(async () => {
       <div ref="scroller" class="gh-scroll">
         <div class="gh-grid">
           <div v-for="(week, wi) in weeks" :key="wi" class="gh-week">
-            <div
+            <button
               v-for="(day, di) in week"
               :key="di"
+              type="button"
               class="gh-cell"
               :data-level="day.level"
               :title="`${day.count} contribution${day.count !== 1 ? 's' : ''} · ${day.date}`"
+              :aria-label="`${day.count} contribution${day.count !== 1 ? 's' : ''} on ${day.date}`"
               @click="select(day)"
             />
           </div>
@@ -208,6 +210,8 @@ onMounted(async () => {
   width: var(--cell-size);
   height: var(--cell-size);
   border-radius: 2px;
+  border: none;
+  padding: 0;
   flex-shrink: 0;
   transition:
     opacity 100ms ease,
@@ -225,6 +229,11 @@ onMounted(async () => {
   transform: scale(1.25);
 }
 
+.gh-cell:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
 .gh-cell--skeleton {
   background: var(--cell-0);
   animation: gh-pulse 1.5s ease-in-out infinite;
@@ -236,6 +245,20 @@ onMounted(async () => {
 @keyframes gh-pulse {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gh-cell--skeleton {
+    animation: none;
+  }
+
+  .gh-cell {
+    transition: none;
+  }
+
+  .gh-cell:hover {
+    transform: none;
+  }
 }
 
 .gh-error {

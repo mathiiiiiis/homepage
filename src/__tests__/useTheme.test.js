@@ -20,6 +20,12 @@ Object.defineProperty(globalThis, 'localStorage', {
   writable: true,
 })
 
+const matchMediaMock = vi.fn(() => ({ matches: false }))
+Object.defineProperty(globalThis, 'matchMedia', {
+  value: matchMediaMock,
+  writable: true,
+})
+
 describe('useTheme', () => {
   let useTheme
 
@@ -32,9 +38,16 @@ describe('useTheme', () => {
     useTheme = mod.useTheme
   })
 
-  it('defaults to dark when localStorage is empty', () => {
+  it('defaults to dark when localStorage is empty and system is dark', () => {
     const { theme } = useTheme()
     expect(theme.value).toBe('dark')
+  })
+
+  it('follows the system preference on first visit', async () => {
+    matchMediaMock.mockReturnValueOnce({ matches: true })
+    vi.resetModules()
+    const { useTheme: fresh } = await import('@/composables/useTheme')
+    expect(fresh().theme.value).toBe('light')
   })
 
   it('reads stored theme from localStorage', () => {

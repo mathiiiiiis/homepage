@@ -1,43 +1,9 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { MiiImages } from '@/stores/imagePaths'
+import { ALL_KEYS, resolveImages, gridKeyFromNormalized } from '@/composables/useMii'
 
-const MIRROR_FALLBACKS = {
-  upRight: { src: 'upLeft', flip: true },
-  right: { src: 'left', flip: true },
-  downLeft: { src: 'downRight', flip: true },
-  down: { src: 'front', flip: false },
-}
-const ALL_KEYS = [
-  'upLeft',
-  'up',
-  'upRight',
-  'left',
-  'front',
-  'right',
-  'downLeft',
-  'down',
-  'downRight',
-]
-const GRID = [
-  ['upLeft', 'up', 'upRight'],
-  ['left', 'front', 'right'],
-  ['downLeft', 'down', 'downRight'],
-]
-//resolve all images, uses a mirror fallback if missing
-const resolved = {}
-ALL_KEYS.forEach((key) => {
-  if (MiiImages[key]) {
-    resolved[key] = { src: MiiImages[key], flip: false }
-  } else {
-    const fb = MIRROR_FALLBACKS[key]
-    if (fb && MiiImages[fb.src]) {
-      resolved[key] = { src: MiiImages[fb.src], flip: fb.flip }
-    } else {
-      resolved[key] = { src: MiiImages.front, flip: false }
-    }
-  }
-})
+const resolved = resolveImages(MiiImages)
 
 const activeKey = ref('front')
 const isHovering = ref(false)
@@ -53,9 +19,15 @@ const wrapperTransform = computed(() => {
   return `rotateY(${tiltX.value}deg) rotateX(${tiltY.value}deg) scale(1.01)`
 })
 
-function onMouseMove(e) {
-  const el = containerRef.value
-  const rect = el.getBoundingClientRect()
+let frame = null
+let pending = null
+
+function apply() {
+  frame = null
+  const e = pending
+  if (!e) return
+
+  const rect = containerRef.value?.getBoundingClientRect()
   let x, y
 
   if (
@@ -65,11 +37,11 @@ function onMouseMove(e) {
     e.clientY >= rect.top &&
     e.clientY <= rect.bottom
   ) {
-    //inside container > precise
+    // inside container > precise
     x = (e.clientX - rect.left) / rect.width
     y = (e.clientY - rect.top) / rect.height
   } else {
-    //outside container > coarse
+    // outside container > coarse
     x = e.clientX / window.innerWidth
     y = e.clientY / window.innerHeight
   }
@@ -77,30 +49,41 @@ function onMouseMove(e) {
   x = Math.max(0, Math.min(1, x))
   y = Math.max(0, Math.min(1, y))
 
-  const col = x < 0.33 ? 0 : x < 0.66 ? 1 : 2
-  const row = y < 0.33 ? 0 : y < 0.66 ? 1 : 2
-
-  activeKey.value = GRID[row][col]
+  activeKey.value = gridKeyFromNormalized(x, y)
   mouseX.value = x
   mouseY.value = y
   isHovering.value = true
 }
 
+function onMouseMove(e) {
+  pending = { clientX: e.clientX, clientY: e.clientY }
+  if (frame === null) frame = requestAnimationFrame(apply)
+}
+
 function onMouseLeave() {
+  if (frame !== null) {
+    cancelAnimationFrame(frame)
+    frame = null
+  }
+  pending = null
   isHovering.value = false
   activeKey.value = 'front'
   mouseX.value = 0.5
   mouseY.value = 0.5
 }
 
+const isFinePointer = () => window.matchMedia?.('(pointer: fine)').matches ?? true
+
 onMounted(() => {
-  window.addEventListener('mousemove', onMouseMove)
+  if (!isFinePointer()) return
+  window.addEventListener('mousemove', onMouseMove, { passive: true })
   document.documentElement.addEventListener('mouseleave', onMouseLeave)
 })
 
 onUnmounted(() => {
   window.removeEventListener('mousemove', onMouseMove)
   document.documentElement.removeEventListener('mouseleave', onMouseLeave)
+  if (frame !== null) cancelAnimationFrame(frame)
 })
 </script>
 
@@ -115,7 +98,8 @@ onUnmounted(() => {
         v-for="key in ALL_KEYS"
         :key="key"
         :src="resolved[key].src"
-        :alt="'Mii facing' + key"
+        :alt="activeKey === key ? 'Mii facing ' + key : ''"
+        :aria-hidden="activeKey === key ? undefined : 'true'"
         :class="{
           active: activeKey === key,
           flipped: resolved[key].flip,
@@ -144,7 +128,6 @@ onUnmounted(() => {
   width: 120px;
   height: 20px;
   border-radius: 50%;
-  /*background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);*/
   transition: transform 0.4s ease;
   z-index: 0;
 }
@@ -157,7 +140,6 @@ onUnmounted(() => {
   transition: transform 0.25s ease-out;
   transform-style: preserve-3d;
   position: relative;
-  /*background: #000;*/
 }
 .mii-image {
   position: absolute;
@@ -175,5 +157,12 @@ onUnmounted(() => {
 }
 .mii-image.flipped {
   transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mii-wrapper,
+  .mii-shadow {
+    transition: none;
+  }
 }
 </style>

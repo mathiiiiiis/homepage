@@ -3,8 +3,8 @@
     "short_name": "mathiiis",
     "start_url": "/",
     "display": "standalone",
-    "background": "#121212",
-    "theme_Color": "#121212",
+    "background_color": "#121212",
+    "theme_color": "#121212",
     "icons": [
         {
             "src": "/icons/icon-192.png",

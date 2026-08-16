@@ -85,7 +85,7 @@ const myButtons = webButtons.filter((b) => b.my)
 <template>
   <div class="socials-page">
     <header class="page-header">
-      <router-link to="/" class="btn-back">
+      <router-link to="/" class="btn-back" aria-label="Back to home">
         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
           <path
             d="M16.88 2.88a1.25 1.25 0 0 0-1.77 0L6.7 11.29a.996.996 0 0 0 0 1.41l8.41 8.41c.49.49 1.28.49 1.77 0s.49-1.28 0-1.77L9.54 12l7.35-7.35c.48-.49.48-1.28-.01-1.77z" />
@@ -96,9 +96,9 @@ const myButtons = webButtons.filter((b) => b.my)
     </header>
 
     <section class="socials-grid">
-      <a v-for="social in socials" :key="social.name" :href="social.href" target="_blank" class="card social-tile">
+      <a v-for="social in socials" :key="social.name" :href="social.href" target="_blank" rel="noopener noreferrer" class="card social-tile">
         <div class="social-icon" :style="{ background: social.color }">
-          <svg class="icon">
+          <svg class="icon" aria-hidden="true">
             <use :href="'#' + social.icon" />
           </svg>
         </div>
@@ -115,14 +115,30 @@ const myButtons = webButtons.filter((b) => b.my)
       <h2 class="section-title">WEB<span>BUTTONS</span></h2>
       <div class="button-wall">
         <div class="wall-row">
-          <a v-for="button in otherButtons" :key="button.label" :href="button.href" target="_blank" class="web-button">
-            <img :src="button.src" :alt="button.label" />
-          </a>
+          <component
+            v-for="button in otherButtons"
+            :key="button.label"
+            :is="button.href ? 'a' : 'span'"
+            :href="button.href"
+            :target="button.href ? '_blank' : undefined"
+            :rel="button.href ? 'noopener noreferrer' : undefined"
+            class="web-button"
+          >
+            <img :src="button.src" :alt="button.label" width="88" height="31" loading="lazy" />
+          </component>
         </div>
         <div class="wall-row">
-          <a v-for="button in myButtons" :key="button.label" :href="button.href" target="_blank" class="web-button">
-            <img :src="button.src" :alt="button.label" />
-          </a>
+          <component
+            v-for="button in myButtons"
+            :key="button.label"
+            :is="button.href ? 'a' : 'span'"
+            :href="button.href"
+            :target="button.href ? '_blank' : undefined"
+            :rel="button.href ? 'noopener noreferrer' : undefined"
+            class="web-button"
+          >
+            <img :src="button.src" :alt="button.label" width="88" height="31" loading="lazy" />
+          </component>
         </div>
       </div>
     </section>
@@ -168,7 +184,7 @@ const myButtons = webButtons.filter((b) => b.my)
 }
 
 .btn-back {
-  position: absolute;
+  position: fixed;
   top: 24px;
   left: 24px;
   width: 48px;
@@ -220,6 +236,10 @@ const myButtons = webButtons.filter((b) => b.my)
   transition:
     opacity var(--transition-fast),
     transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.social-tile:hover {
+  opacity: 0.85;
 }
 
 .social-tile:active {
