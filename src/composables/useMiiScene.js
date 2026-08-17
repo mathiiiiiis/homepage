@@ -43,6 +43,7 @@ const IDLE_AFTER_MS = 5000
 const IDLE_EVERY_MS = 3500
 const IDLE_YAW = 0.3
 const IDLE_PITCH = 0.16
+const IDLE_POSE_CHANCE = 0.3
 
 //tracking hands head over to pose, then takes it back
 const TRACK_FADE_OUT = 12 // 1/s
@@ -50,6 +51,11 @@ const TRACK_FADE_IN = 5
 const POSE_RESPONSE = 9
 const POSE_HOLD_MS = 900
 const POSE_BONES_TRACKED = ['Head', 'Spine_2']
+
+//measured: return blend needs this long to fully settle hold
+const POSE_RELEASE_MS = 1550
+const POSE_COOLDOWN_MS = 900
+const IDLE_POSE_AFTER_MS = POSE_HOLD_MS + POSE_RELEASE_MS + POSE_COOLDOWN_MS
 
 const FOV = 20
 const FRAME_MARGIN = 1.12
@@ -92,6 +98,8 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   let lastTime = 0
 
   let poses = null
+  let poseNames = []
+  let lastPose = null
   let poseBones = null
   let poseRest = null
   let activePose = null
@@ -100,6 +108,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   let trackWeight = 1
   let trackTarget = 1
   let poseTimer = null
+  let poseBusyUntil = 0
 
   const poseQuat = new THREE.Quaternion()
   const trackQuat = new THREE.Quaternion()
@@ -200,12 +209,17 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     step()
   }
 
-  function react() {
+  function react(poseName) {
     //reactionFlip = !reactionFlip
     clearTimeout(blinkTimer)
     clearTimeout(reactionTimer)
+    bumpIdle()
     //setExpression(reactionFlip ? 'happy' : 'click')
     setExpression('click')
+    if (poseName) {
+      poseBusyUntil = 0
+      playPose(poseName, REACTION_MS)
+    }
     reactionTimer = setTimeout(() => {
       reactionTimer = null
       setExpression('neutral')
@@ -221,16 +235,40 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
 
   //glance somewhere nearby instead of freezing dead centre
   function idleGlance() {
+    //sometimes act instead of looking around
+    if (poseNames.length && !poseBusy() && Math.random() < IDLE_POSE_CHANCE) {
+      playPose(randomPose())
+      //wait out hold and return blend before next beat
+      idleTimer = setTimeout(idleGlance, IDLE_POSE_AFTER_MS + Math.random() * 2500)
+      return
+    }
     targetYaw = (Math.random() * 2 - 1) * IDLE_YAW
     targetPitch = (Math.random() * 2 - 1) * IDLE_PITCH
     wake()
     idleTimer = setTimeout(idleGlance, IDLE_EVERY_MS + Math.random() * 2000)
   }
 
+  function playRandomPose() {
+    if (poseNames.length) playPose(randomPose())
+  }
+
+  //never twice in a row
+  function randomPose() {
+    if (poseNames.length < 2) return poseNames[0]
+    let name
+    do {
+      name = poseNames[Math.floor(Math.random() * poseNames.length)]
+    } while (name === lastPose)
+    lastPose = name
+    return name
+  }
+
   //poses == local rotations on same rig
-  function loadPoses(data) {
+  //excluded means they are never played
+  function loadPoses(data, exclude = []) {
     if (!model) return
     poses = data
+    poseNames = Object.keys(data).filter((n) => !exclude.includes(n))
     poseBones = {}
     poseRest = {}
     for (const name of Object.keys(Object.values(data)[0].rotation)) {
@@ -241,8 +279,13 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     }
   }
 
-  function playPose(name) {
-    if (!poses || !poses[name]) return
+  function poseBusy() {
+    return performance.now() < poseBusyUntil
+  }
+
+  function playPose(name, hold = POSE_HOLD_MS) {
+    if (!poses || !poses[name] || poseBusy()) return
+    poseBusyUntil = performance.now() + hold + POSE_RELEASE_MS + POSE_COOLDOWN_MS
     clearTimeout(poseTimer)
     activePose = poses[name].rotation
     poseTarget = 1
@@ -251,7 +294,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
       poseTimer = null
       poseTarget = 0
       trackTarget = 1
-    }, POSE_HOLD_MS)
+    }, hold)
     wake()
   }
 
@@ -525,6 +568,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     react,
     loadPoses,
     playPose,
+    playRandomPose,
     setVisible,
     resize,
     dispose,

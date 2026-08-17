@@ -6,7 +6,10 @@ import { useTouchTarget } from '@/composables/useTouchTarget'
 import MODEL_URL from '@/assets/models/mii.glb?url'
 import POSES from '@/assets/poses.json'
 
-const POSE_NAMES = Object.keys(POSES)
+const POKE_POSE = 'Pose.02'
+const POKE_POSE_ALT = 'Pose.16'
+const POKE_ALT_CHANCE = 0.25
+const POSE_EXCLUDED = ['Pose.01', POKE_POSE, 'Pose.04', POKE_POSE_ALT]
 
 import BLINK_URL from '@/assets/faces/blink.webp?url'
 //import HALFLID_URL from '@/assets/faces/halflid.webp?url'
@@ -33,7 +36,7 @@ let resizeObserver = null
 let intersectionObserver = null
 
 function onVisibilityChange() {
-  scene.value?.setVisibility(!document.hidden)
+  scene.value?.setVisible(!document.hidden)
 }
 
 onMounted(async () => {
@@ -52,7 +55,7 @@ onMounted(async () => {
       onReady: () => {
         loaded.value = true
         emit('ready')
-        scene.value?.loadPoses(POSES)
+        scene.value?.loadPoses(POSES, POSE_EXCLUDED)
         scene.value?.loadFaces(FACES)
       },
       onError: (e) => {
@@ -85,8 +88,7 @@ onMounted(async () => {
 })
 
 function onPoke() {
-  scene.value?.react()
-  scene.value?.playPose(POSE_NAMES[Math.floor(Math.random() * POSE_NAMES.length)])
+  scene.value?.react(Math.random() < POKE_ALT_CHANCE ? POKE_POSE_ALT : POKE_POSE)
 }
 
 function onContextLost(e) {
