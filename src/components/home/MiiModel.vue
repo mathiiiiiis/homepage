@@ -1,6 +1,7 @@
 <script setup>
 import { ref, shallowRef, watch, onMounted, onUnmounted } from 'vue'
 import { usePointerTarget, hasFinePointer } from '@/composables/usePointerTarget'
+import { useTouchTarget } from '@/composables/useTouchTarget'
 
 import MODEL_URL from '@/assets/models/mii.glb?url'
 
@@ -74,6 +75,8 @@ if (hasFinePointer()) {
   watch([u, v], ([nu, nv]) => scene.value?.setLookTarget(nu * 2 - 1, -(nv * 2 - 1)))
 }
 
+useTouchTarget(wrapper, (ndcX, ndcY) => scene.value?.setLookTarget(ndcX, ndcY))
+
 onUnmounted(() => {
   resizeObserver?.disconnect()
   intersectionObserver?.disconnect()
@@ -97,6 +100,7 @@ onUnmounted(() => {
   position: relative;
   width: 100%;
   height: 100%;
+  touch-action: none;
 }
 
 .mii-canvas {
