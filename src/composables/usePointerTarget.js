@@ -5,6 +5,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const x = ref(0.5)
 const y = ref(0.5)
+const u = ref(0.5)
+const v = ref(0.5)
 const active = ref(false)
 
 let refCount = 0
@@ -20,22 +22,16 @@ function flush() {
   const rect = containerEl?.getBoundingClientRect()
   let nx, ny
 
-  if (
-    rect &&
-    e.clientX >= rect.left &&
-    e.clientX <= rect.right &&
-    e.clientY >= rect.top &&
-    e.clientY <= rect.bottom
-  ) {
-    // inside container > precise
+  if (rect && rect.width > 0) {
     nx = (e.clientX - rect.left) / rect.width
     ny = (e.clientY - rect.top) / rect.height
   } else {
-    // outside container > coarse
     nx = e.clientX / window.innerWidth
     ny = e.clientY / window.innerHeight
   }
 
+  u.value = nx
+  v.value = ny
   x.value = Math.max(0, Math.min(1, nx))
   y.value = Math.max(0, Math.min(1, ny))
   active.value = true
@@ -52,6 +48,8 @@ function onLeave() {
     frame = null
   }
   pending = null
+  u.value = 0.5
+  v.value = 0.5
   x.value = 0.5
   y.value = 0.5
   active.value = false
@@ -80,5 +78,5 @@ export function usePointerTarget(containerRef) {
     onLeave()
   })
 
-  return { x, y, active }
+  return { x, y, u, v, active }
 }
