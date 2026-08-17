@@ -34,6 +34,16 @@ const MODULATE_TYPE = {
 const MODE_CONSTANT = 0
 const MODE_TEXTURE_DIRECT = 1
 
+const BLINK_MIN_MS = 2500
+const BLINK_MAX_MS = 6500
+const BLINK_FRAMES = [['blink', 165]]
+const REACTION_MS = 700
+
+const IDLE_AFTER_MS = 5000
+const IDLE_EVERY_MS = 3500
+const IDLE_YAW = 0.3
+const IDLE_PITCH = 0.16
+
 const FOV = 20
 const FRAME_MARGIN = 1.12
 
@@ -81,6 +91,14 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   const lookPlane = new THREE.Plane()
   const raycaster = new THREE.Raycaster()
 
+  let maskMaterial = null
+  let neutralMap = null
+  const faces = {}
+  let blinkTimer = null
+  let idleTimer = null
+  let reactionTimer = null
+  //let reactionFlip = false
+
   let running = false
   let visible = true
   let frame = null
@@ -102,7 +120,91 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     lookDir.subVectors(lookPoint, headWorld).normalize()
     targetYaw = clamp(Math.atan2(lookDir.x, lookDir.z), -MAX_YAW, MAX_YAW)
     targetPitch = clamp(-Math.asin(clamp(lookDir.y, -1, 1)), -MAX_PITCH, MAX_PITCH)
+    bumpIdle()
     wake()
+  }
+
+  function setExpression(name) {
+    if (!maskMaterial) return
+    const next = name === 'neutral' ? neutralMap : faces[name]
+    if (!next || maskMaterial.map === next) return
+    maskMaterial.map = next
+    needsRender = true
+    wake()
+  }
+
+  //TextureLoader defaults differ from glb, mirror sampler setup
+  function loadFaces(urls) {
+    if (!neutralMap) return
+    const ref = neutralMap
+    const loader = new THREE.TextureLoader()
+    for (const [name, url] of Object.entries(urls)) {
+      loader.load(url, (t) => {
+        if (disposed) {
+          t.dispose()
+          return
+        }
+        t.flipY = ref.flipY
+        t.colorSpace = ref.colorSpace
+        t.wrapS = ref.wrapS
+        t.wrapT = ref.wrapT
+        t.minFilter = ref.minFilter
+        t.magFilter = ref.magFilter
+        t.generateMipmaps = ref.generateMipmaps
+        t.anisotropy = ref.anisotropy
+        t.needsUpdate = true
+        faces[name] = t
+        if (name === 'blink') scheduleBlink()
+      })
+    }
+  }
+
+  function scheduleBlink() {
+    clearTimeout(blinkTimer)
+    if (!visible || reactionTimer || !faces.blink) return
+    blinkTimer = setTimeout(runBlink, BLINK_MIN_MS + Math.random() * (BLINK_MAX_MS - BLINK_MIN_MS))
+  }
+
+  function runBlink() {
+    let i = 0
+    const step = () => {
+      if (i >= BLINK_FRAMES.length) {
+        setExpression('neutral')
+        scheduleBlink()
+        return
+      }
+      const [name, ms] = BLINK_FRAMES[i++]
+      setExpression(name)
+      blinkTimer = setTimeout(step, ms)
+    }
+    step()
+  }
+
+  function react() {
+    //reactionFlip = !reactionFlip
+    clearTimeout(blinkTimer)
+    clearTimeout(reactionTimer)
+    //setExpression(reactionFlip ? 'happy' : 'click')
+    setExpression('click')
+    reactionTimer = setTimeout(() => {
+      reactionTimer = null
+      setExpression('neutral')
+      scheduleBlink()
+    }, REACTION_MS)
+  }
+
+  function bumpIdle() {
+    clearTimeout(idleTimer)
+    if (!visible) return
+    idleTimer = setTimeout(idleGlance, IDLE_AFTER_MS)
+  }
+
+  //glance somewhere nearby instead of freezing dead centre
+  function idleGlance() {
+    targetYaw = (Math.random() * 2 - 1) * IDLE_YAW
+    targetPitch = (Math.random() * 2 - 1) * IDLE_PITCH
+    wake()
+    idleTimer = setTimeout(idleGlance, IDLE_EVERY_MS + Math.random() * 2000)
   }
 
   function applyPose() {
@@ -189,7 +291,15 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
 
   function setVisible(v) {
     visible = v
-    if (v) wake()
+    if (v) {
+      wake()
+      scheduleBlink()
+      bumpIdle()
+    } else {
+      clearTimeout(blinkTimer)
+      clearTimeout(idleTimer)
+      setExpression('neutral')
+    }
   }
 
   function resize(width, height) {
@@ -238,6 +348,11 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
         o.renderOrder = o.name === 'Noseline' ? 2 : 1
       }
 
+      if (o.name === 'Mask') {
+        maskMaterial = m
+        neutralMap = src.map
+      }
+
       o.material = m
       src.dispose()
     })
@@ -256,6 +371,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
 
     scene.add(model)
     frameModel()
+    bumpIdle()
     needsRender = true
   }
 
@@ -294,6 +410,10 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   function dispose() {
     disposed = true
     running = false
+    clearTimeout(blinkTimer)
+    clearTimeout(idleTimer)
+    clearTimeout(reactionTimer)
+    for (const t of Object.values(faces)) t.dispose()
     if (frame !== null) cancelAnimationFrame(frame)
     if (model) {
       model.traverse((o) => {
@@ -309,5 +429,5 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     renderer.dispose()
   }
 
-  return { setLookTarget, setVisible, resize, dispose }
+  return { setLookTarget, setExpression, loadFaces, react, setVisible, resize, dispose }
 }

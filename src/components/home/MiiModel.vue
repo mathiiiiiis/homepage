@@ -4,6 +4,17 @@ import { usePointerTarget, hasFinePointer } from '@/composables/usePointerTarget
 import { useTouchTarget } from '@/composables/useTouchTarget'
 
 import MODEL_URL from '@/assets/models/mii.glb?url'
+import BLINK_URL from '@/assets/faces/blink.webp?url'
+//import HALFLID_URL from '@/assets/faces/halflid.webp?url'
+//import HAPPY_URL from '@/assets/faces/happy.webp?url'
+import CLICK_URL from '@/assets/faces/click.webp?url'
+
+const FACES = {
+  blink: BLINK_URL,
+  //halflid: HALFLID_URL,
+  //happy: HAPPY_URL,
+  click: CLICK_URL,
+}
 
 const emit = defineEmits(['fail', 'ready'])
 
@@ -37,6 +48,7 @@ onMounted(async () => {
       onReady: () => {
         loaded.value = true
         emit('ready')
+        scene.value?.loadFaces(FACES)
       },
       onError: (e) => {
         console.error('[MII] model failed:', e)
@@ -50,6 +62,7 @@ onMounted(async () => {
   }
 
   canvas.value.addEventListener('webglcontextlost', onContextLost, { passive: true })
+  wrapper.value.addEventListener('pointerdown', onPoke, { passive: true })
 
   resizeObserver = new ResizeObserver(([entry]) => {
     const { width, height } = entry.contentRect
@@ -65,6 +78,10 @@ onMounted(async () => {
 
   document.addEventListener('visibilitychange', onVisibilityChange)
 })
+
+function onPoke() {
+  scene.value?.react()
+}
 
 function onContextLost(e) {
   e.preventDefault()
@@ -82,6 +99,7 @@ onUnmounted(() => {
   intersectionObserver?.disconnect()
   document.removeEventListener('visibilitychange', onVisibilityChange)
   canvas.value?.removeEventListener('webglcontextlost', onContextLost)
+  wrapper.value?.removeEventListener('pointerdown', onPoke)
   scene.value?.dispose()
   scene.value = null
 })
