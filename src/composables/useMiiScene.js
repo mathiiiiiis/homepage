@@ -436,6 +436,13 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     if (frame === null) frame = requestAnimationFrame(tick)
   }
 
+  //only mii itself should count as a poke
+  function hitTest(ndcX, ndcY) {
+    if (!model) return false
+    raycaster.setFromCamera(lookNdc.set(ndcX, ndcY), camera)
+    return raycaster.intersectObject(model, true).length > 0
+  }
+
   function setVisible(v) {
     visible = v
     if (v) {
@@ -584,6 +591,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     react,
     loadPoses,
     playPose,
+    hitTest,
     playRandomPose,
     setVisible,
     resize,

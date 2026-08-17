@@ -87,7 +87,13 @@ onMounted(async () => {
   document.addEventListener('visibilitychange', onVisibilityChange)
 })
 
-function onPoke() {
+function onPoke(e) {
+  const rect = wrapper.value?.getBoundingClientRect()
+  if (!rect || rect.width === 0) return
+  const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1
+  const ndcY = -(((e.clientY - rect.top) / rect.height) * 2 - 1)
+  if (!scene.value?.hitTest(ndcX, ndcY)) return
+
   scene.value?.react(Math.random() < POKE_ALT_CHANCE ? POKE_POSE_ALT : POKE_POSE)
 }
 
