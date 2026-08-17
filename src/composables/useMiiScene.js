@@ -13,7 +13,10 @@ const SPINE_BONE = 'Spine_2'
 const MAX_YAW = 0.62 // ~35deg
 const MAX_PITCH = 0.43 // ~24deg
 const SPINE_FOLLOW = 0.25
-const DAMPING = 0.12
+const RESPONSE = 8 // head catchup rate (1/s)
+const SPINE_RESPONSE = 3 // torso lags behind head
+const LOOK_DEPTH = 2.6 // how far in front cursor plane sits
+const MAX_DT = 0.1
 const SETTLE_EPSILON = 0.0004
 
 // FFLModulateType per mash, picks specular/fresnel LUT curve
@@ -33,6 +36,8 @@ const MODE_TEXTURE_DIRECT = 1
 
 const FOV = 20
 const FRAME_MARGIN = 1.12
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v))
 
 export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   const renderer = new THREE.WebGLRenderer({
@@ -66,6 +71,15 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   let targetPitch = 0
   let yaw = 0
   let pitch = 0
+  let spineYaw = 0
+  let lastTime = 0
+
+  const headWorld = new THREE.Vector3()
+  const lookNdc = new THREE.Vector2()
+  const lookPoint = new THREE.Vector3()
+  const lookDir = new THREE.Vector3()
+  const lookPlane = new THREE.Plane()
+  const raycaster = new THREE.Raycaster()
 
   let running = false
   let visible = true
@@ -73,9 +87,21 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   let needsRender = true
   let disposed = false
 
-  function setLookTarget(nx, ny) {
-    targetYaw = (nx - 0.5) * 2 * MAX_YAW
-    targetPitch = (ny - 0.5) * 2 * MAX_PITCH
+  // ndc is relative to canvas and may fall outside -1..1 when
+  // cursor is off element
+  function setLookTarget(ndcX, ndcY) {
+    if (!head) return
+
+    raycaster.setFromCamera(lookNdc.set(ndcX, ndcY), camera)
+    lookPlane.setFromNormalAndCoplanarPoint(
+      camera.getWorldDirection(lookDir).negate(),
+      lookPoint.copy(headWorld).addScaledVector(lookDir, LOOK_DEPTH),
+    )
+    if (!raycaster.ray.intersectPlane(lookPlane, lookPoint)) return
+
+    lookDir.subVectors(lookPoint, headWorld).normalize()
+    targetYaw = clamp(Math.atan2(lookDir.x, lookDir.z), -MAX_YAW, MAX_YAW)
+    targetPitch = clamp(-Math.asin(clamp(lookDir.y, -1, 1)), -MAX_PITCH, MAX_PITCH)
     wake()
   }
 
@@ -83,7 +109,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     if (!head) return
 
     if (spine && SPINE_FOLLOW > 0) {
-      tmpEuler.set(0, yaw * SPINE_FOLLOW, 0)
+      tmpEuler.set(0, spineYaw, 0)
       tmpQuat.setFromEuler(tmpEuler)
       spine.parent.getWorldQuaternion(parentWorld)
       spine.quaternion
@@ -100,7 +126,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
       parentWorld.copy(headParentWorld)
     }
 
-    tmpEuler.set(pitch, yaw * (1 - SPINE_FOLLOW), 0)
+    tmpEuler.set(pitch, yaw - spineYaw, 0)
     tmpQuat.setFromEuler(tmpEuler)
     head.quaternion
       .copy(headParentWorldInv)
@@ -109,22 +135,34 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
       .multiply(headRest)
   }
 
-  function tick() {
+  function tick(now) {
     frame = null
     if (disposed) return
 
+    const dt = Math.min((now - lastTime) / 1000, MAX_DT)
+    lastTime = now
+
+    const targetSpine = targetYaw * SPINE_FOLLOW
     const dy = targetYaw - yaw
     const dp = targetPitch - pitch
-    const moving = Math.abs(dy) > SETTLE_EPSILON || Math.abs(dp) > SETTLE_EPSILON
+    const ds = targetSpine - spineYaw
+    const moving =
+      Math.abs(dy) > SETTLE_EPSILON ||
+      Math.abs(dp) > SETTLE_EPSILON ||
+      Math.abs(ds) > SETTLE_EPSILON
 
     if (moving) {
-      yaw += dy * DAMPING
-      pitch += dp * DAMPING
+      const a = 1 - Math.exp(-RESPONSE * dt)
+      const sa = 1 - Math.exp(-SPINE_RESPONSE * dt)
+      yaw += dy * a
+      pitch += dp * a
+      spineYaw += ds * sa
       applyPose()
       needsRender = true
-    } else if (yaw !== targetYaw || pitch !== targetPitch) {
+    } else if (yaw !== targetYaw || pitch !== targetPitch || spineYaw !== targetSpine) {
       yaw = targetYaw
       pitch = targetPitch
+      spineYaw = targetSpine
       applyPose()
       needsRender = true
     }
@@ -145,6 +183,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   function wake() {
     if (disposed || !visible || running) return
     running = true
+    lastTime = performance.now()
     if (frame === null) frame = requestAnimationFrame(tick)
   }
 
@@ -213,6 +252,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     headParentWorld = new THREE.Quaternion()
     head.parent.getWorldQuaternion(headParentWorld)
     headParentWorldInv = headParentWorld.clone().invert()
+    head.getWorldPosition(headWorld)
 
     scene.add(model)
     frameModel()

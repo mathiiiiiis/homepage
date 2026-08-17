@@ -11,7 +11,7 @@ const wrapper = ref(null)
 const loaded = ref(false)
 const scene = shallowRef(null)
 
-const { x, y } = usePointerTarget(wrapper)
+const { u, v } = usePointerTarget(wrapper)
 
 let resizeObserver = null
 let intersectionObserver = null
@@ -71,7 +71,7 @@ function onContextLost(e) {
 }
 
 if (hasFinePointer()) {
-  watch([x, y], ([nx, ny]) => scene.value?.setLookTarget(nx, ny))
+  watch([u, v], ([nu, nv]) => scene.value?.setLookTarget(nu * 2 - 1, -(nv * 2 - 1)))
 }
 
 onUnmounted(() => {
