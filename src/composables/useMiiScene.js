@@ -102,6 +102,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
   let lastPose = null
   let poseBones = null
   let poseRest = null
+  let poseFrom = null
   let activePose = null
   let poseBlend = 0
   let poseTarget = 0
@@ -112,6 +113,7 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
 
   const poseQuat = new THREE.Quaternion()
   const trackQuat = new THREE.Quaternion()
+  const blendQuat = new THREE.Quaternion()
 
   const headWorld = new THREE.Vector3()
   const lookNdc = new THREE.Vector2()
@@ -271,12 +273,19 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     poseNames = Object.keys(data).filter((n) => !exclude.includes(n))
     poseBones = {}
     poseRest = {}
+    poseFrom = {}
     for (const name of Object.keys(Object.values(data)[0].rotation)) {
       const bone = model.getObjectByName(name)
       if (!bone) continue
       poseBones[name] = bone
       poseRest[name] = bone.quaternion.clone()
+      poseFrom[name] = bone.quaternion.clone()
     }
+  }
+
+  function captureFrom() {
+    if (!poseFrom) return
+    for (const name in poseBones) poseFrom[name].copy(poseBones[name].quaternion)
   }
 
   function poseBusy() {
@@ -287,12 +296,17 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
     if (!poses || !poses[name] || poseBusy()) return
     poseBusyUntil = performance.now() + hold + POSE_RELEASE_MS + POSE_COOLDOWN_MS
     clearTimeout(poseTimer)
+    captureFrom()
     activePose = poses[name].rotation
+    poseBlend = 0
     poseTarget = 1
     trackTarget = 0
     poseTimer = setTimeout(() => {
       poseTimer = null
-      poseTarget = 0
+      captureFrom()
+      activePose = null
+      poseBlend = 0
+      poseTarget = 1
       trackTarget = 1
     }, hold)
     wake()
@@ -327,26 +341,29 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
       .multiply(parentWorld)
       .multiply(headRest)
 
-    if (poseBlend <= 0.0005 || !activePose) return
+    if (!poseBlend) return
 
-    //bones tracking does not touch just belnd from their rest
+    //null activePose means target is rest
+    const targetOf = (name) => {
+      const q = activePose && activePose[name]
+      return q ? poseQuat.set(q[0], q[1], q[2], q[3]) : poseQuat.copy(poseRest[name])
+    }
+
+    //bones tracking does not touch just blend from where they are
     for (const name in poseBones) {
       if (POSE_BONES_TRACKED.includes(name)) continue
-      const q = activePose[name]
-      if (!q) continue
-      poseQuat.set(q[0], q[1], q[2], q[3])
-      poseBones[name].quaternion.copy(poseRest[name]).slerp(poseQuat, poseBlend)
+      poseBones[name].quaternion.copy(poseFrom[name]).slerp(targetOf(name), poseBlend)
     }
 
     //contested bones hand over as trackWeight falls
     const handover = 1 - trackWeight
+    if (handover <= 0.0005) return
     for (const name of POSE_BONES_TRACKED) {
       const bone = poseBones[name]
-      const q = activePose[name]
-      if (!bone || !q) continue
-      poseQuat.set(q[0], q[1], q[2], q[3])
+      if (!bone) continue
+      blendQuat.copy(poseFrom[name]).slerp(targetOf(name), poseBlend)
       trackQuat.copy(bone.quaternion)
-      bone.quaternion.copy(trackQuat).slerp(poseQuat, handover)
+      bone.quaternion.copy(trackQuat).slerp(blendQuat, handover)
     }
   }
 
@@ -395,7 +412,6 @@ export function createMiiScene(canvas, { modeUrl, onReady, onError }) {
       spineYaw = targetSpine
       poseBlend = poseTarget
       trackWeight = trackTarget
-      if (poseBlend === 0) activePose = null
       applyPose()
       needsRender = true
     }
