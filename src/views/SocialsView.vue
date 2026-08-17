@@ -11,7 +11,7 @@ const socials = [
   {
     name: 'Discord',
     handle: '@mathhiiss',
-    href: 'https://github.com/users/1377301109827174660',
+    href: 'https://discord.com/users/1377301109827174660',
     icon: 'icon-discord',
     color: '#5865f2',
   },
