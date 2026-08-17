@@ -4,6 +4,10 @@ import { usePointerTarget, hasFinePointer } from '@/composables/usePointerTarget
 import { useTouchTarget } from '@/composables/useTouchTarget'
 
 import MODEL_URL from '@/assets/models/mii.glb?url'
+import POSES from '@/assets/poses.json'
+
+const POSE_NAMES = Object.keys(POSES)
+
 import BLINK_URL from '@/assets/faces/blink.webp?url'
 //import HALFLID_URL from '@/assets/faces/halflid.webp?url'
 //import HAPPY_URL from '@/assets/faces/happy.webp?url'
@@ -48,6 +52,7 @@ onMounted(async () => {
       onReady: () => {
         loaded.value = true
         emit('ready')
+        scene.value?.loadPoses(POSES)
         scene.value?.loadFaces(FACES)
       },
       onError: (e) => {
@@ -81,6 +86,7 @@ onMounted(async () => {
 
 function onPoke() {
   scene.value?.react()
+  scene.value?.playPose(POSE_NAMES[Math.floor(Math.random() * POSE_NAMES.length)])
 }
 
 function onContextLost(e) {
