@@ -85,6 +85,11 @@ const webButtons = [
     href: 'https://kernel.org',
   },
   {
+    label: "LittleBit's Badge",
+    src: '/images/webButtons/littlebit.gif',
+    href: 'https://littlebitstudios.com',
+  },
+  {
     label: 'mathiiis.de animated',
     src: '/images/webButtons/mathiiis-de.gif',
     my: true,
