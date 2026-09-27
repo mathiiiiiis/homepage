@@ -5,22 +5,15 @@ const featured = {
     'A local music player for a lot of devices (kinda). Built with Flutter. Development started in April 2025. Got restarted in March 2026.',
   tech: ['icon-flutter', 'icon-dart'],
   github: 'https://github.com/appsono/sono-new',
-  website: 'https://play.google.com/store/apps/details?id=wtf.sono.app',
+  website: 'https://sono.mathiiis.de/',
   images: ['/images/projects/sono-1.png'],
 }
 
 const projects = [
   {
-    title: 'Blog but different',
-    description: 'A live chat-style blog with real-time reactions and media support.',
-    tech: ['icon-vue', 'icon-javascript', 'icon-python', 'icon-postgres', 'icon-docker'],
-    github: 'https://github.com/mathiiiiiis/blog-but-different',
-    website: 'https://blog.mathiiis.de',
-    images: ['/images/projects/blog-1.png'],
-  },
-  {
     title: 'Global Chat Bot',
-    description: 'Open-source Global Chat bot for Nerimity, with a real outbound queue so it survives the rate limits.',
+    description:
+      'Open-source Global Chat bot for Nerimity, with a real outbound queue so it survives the rate limits.',
     tech: ['icon-javascript'],
     github: 'https://github.com/mathiiiiiis/global-chat-bot',
     website: 'https://nerimity.com/bot/1778634213063569408?perms=2',
@@ -28,10 +21,10 @@ const projects = [
   },
   {
     title: "Don't Click It",
-    description: "A reflex game where a narrator tells you to click or not. Sometimes they lie. ",
+    description: 'A reflex game where a narrator tells you to click or not. Sometimes they lie. ',
     tech: ['icon-typescript', 'icon-docker'],
     github: 'https://github.com/mathiiiiiis/dont-click-it',
-    website: 'https://dci.mathiiis.de',
+    website: 'https://dci.mathiiis.de/',
     images: ['/images/projects/dont-click-it-1.png'],
   },
   {
@@ -39,7 +32,7 @@ const projects = [
     description: 'This website. What did you expect?',
     tech: ['icon-vue', 'icon-javascript', 'icon-docker'],
     github: 'https://github.com/mathiiiiiis/homepage',
-    website: 'https://mathiiis.de',
+    website: 'https://mathiiis.de/',
     images: ['/images/projects/homepage-1.png'],
   },
 ]
@@ -78,7 +71,9 @@ const projects = [
           </div>
         </div>
         <div class="featured-buttons">
-          <a :href="featured.website" target="_blank" rel="noopener noreferrer" class="btn-website">Website</a>
+          <a :href="featured.website" target="_blank" rel="noopener noreferrer" class="btn-website"
+            >Website</a
+          >
           <a
             :href="featured.github"
             target="_blank"
@@ -138,7 +133,13 @@ const projects = [
               </svg>
             </div>
             <div class="project-buttons">
-              <a v-if="project.website" :href="project.website" target="_blank" rel="noopener noreferrer" class="btn-website">
+              <a
+                v-if="project.website"
+                :href="project.website"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-website"
+              >
                 Website
               </a>
               <a

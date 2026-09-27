@@ -54,7 +54,7 @@ const webButtons = [
   {
     label: 'Sono on GitHub',
     src: '/images/webButtons/sono-github-appsono.gif',
-    href: 'https://github.com/appsono',
+    href: 'https://sono.mathiiis.de',
   },
   {
     label: 'Powered by Debian',
