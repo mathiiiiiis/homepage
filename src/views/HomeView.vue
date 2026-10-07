@@ -24,7 +24,7 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
                 </div>
               </div>
               <div class="about-short-description">
-                <p class="tagline">A 16-year-old software dev from Germany.</p>
+                <p class="tagline">A 17-year-old software dev from Germany.</p>
               </div>
             </section>
             <section class="button-row">
@@ -165,7 +165,7 @@ import GitHubActivity from '@/components/home/GitHubActivity.vue'
         <section class="card about-me">
           <h2 class="about-me-title">ABOUT<span>ME</span></h2>
           <p>
-            Hello, I'm mathis, a 16-year-old, living in Germany. I started coding when I was 13 and
+            Hello, I'm mathis, a 17-year-old, living in Germany. I started coding when I was 13 and
             now mostly work on OSS Projects.
           </p>
           <p>Currently building Sono, a local music player.</p>
